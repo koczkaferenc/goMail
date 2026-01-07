@@ -1,0 +1,2 @@
+# goMail
+Levelezés adminisztrációs rendszer
