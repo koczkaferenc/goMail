@@ -1,0 +1,14 @@
+#!/bin/bash
+BUILDDIR=../docker/gomail/bin
+[ ! -d ${BUILDDIR} ] && mkdir ${BUILDDIR}
+# Buildeljük a go binárist.
+GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o ${BUILDDIR}
+
+# Elkészítjük a konténert
+
+docker buildx build \
+  --platform linux/amd64 \
+  -t koczkaferenc/bcserver:latest \
+  --push .
+
+cp src/config.yaml .
