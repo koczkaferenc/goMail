@@ -1,0 +1,39 @@
+{{define "content"}}
+<div style="padding: 20px; border: 1px solid #ccc; margin: 10px">
+    <h2>Felhasználó szerkesztése</h2>
+
+    <form action="/saveuser" method="POST">
+        <input type="hidden" name="id" value="{{.Id}}" />
+
+        <p>
+            <label>Felhasználó neve:</label><br />
+            <input
+                type="text"
+                name="nev"
+                value="{{.Name}}"
+                style="width: 300px; padding: 5px"
+            />
+        </p>
+
+        <p>
+            <label>Admin jogosultság:</label>
+            <input type="checkbox" name="admin" {{if .Admin}}checked{{end}} />
+        </p>
+
+        <hr />
+        <button
+            type="submit"
+            style="
+                background-color: #4caf50;
+                color: white;
+                padding: 10px 20px;
+                border: none;
+                cursor: pointer;
+            "
+        >
+            Módosítások mentése
+        </button>
+        <a href="/listusers" style="margin-left: 10px">Mégse</a>
+    </form>
+</div>
+{{end}}

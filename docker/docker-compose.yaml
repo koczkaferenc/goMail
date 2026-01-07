@@ -15,5 +15,9 @@ services:
       MYSQL_ROOT_HOST: ${MYSQL_ROOT_HOST}
 
   gomail:
-    container:name: ${CONTAINER_NAME}-gomail
-    build: gomail
+    container_name: ${CONTAINER_NAME}-goMail
+    build: goMail
+    volumes:
+      - ./config.yaml:/config.yaml
+    ports:
+      - 5555:80

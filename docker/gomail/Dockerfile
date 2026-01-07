@@ -1,3 +1,3 @@
 FROM alpine
-COPY bin/gomail /gomail
-ENTRYPOINT ["/gomail"]
+COPY bin/goMail /goMail
+ENTRYPOINT ["/goMail"]

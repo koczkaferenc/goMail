@@ -1,0 +1,17 @@
+{{define "layout"}}
+<!doctype html>
+<html>
+    <head>
+        <title>Admin</title>
+    </head>
+    <body>
+        <nav>
+            <a href="/usersList">Felhasználók</a> |
+            <a href="/userForm?id=3">Űrlap</a>
+        </nav>
+        {{template "content" .}}
+
+        <footer>© 2026 goMail ISP</footer>
+    </body>
+</html>
+{{end}}
