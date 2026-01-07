@@ -3,37 +3,43 @@ package main
 import (
 	"fmt"
 	"goMail/isp"
+	"goMail/config"
 	"log"
 	"net/http"
+	"os"
+
+	"github.com/gorilla/sessions"
 )
 
+var cfg config.Config
+var store *sessions.FilesystemStore
+
 func main() {
+	// Konfiguráció beolvasása
+    if err := config.LoadConfig(&cfg); err != nil {
+        fmt.Println(err.Error())
+        os.Exit(1)
+    }
+	err := os.MkdirAll(cfg.Server.Session.Path, 0755)
+	if err != nil {
+		log.Fatal("Nem sikerült létrehozni a session mappát:", err)
+	}
+
+	store = sessions.NewFilesystemStore(cfg.Server.Session.Path, []byte("nagyon-titkos-kulcs"))
+
+	app := &isp.Env{
+        Store: store,
+        Config: cfg,
+    }
+
 	mux := http.NewServeMux()
-	mux.HandleFunc("GET /usersList", isp.ListUsers)
-	mux.HandleFunc("GET /userForm", isp.UserForm)
+	mux.HandleFunc("GET /", app.ListUsers)
+	mux.HandleFunc("GET /usersList", app.ListUsers)
+	mux.HandleFunc("GET /userForm", app.UserForm)
+	mux.HandleFunc("GET /userLoginForm", app.UserLoginForm)
+	mux.HandleFunc("POST /userLogin", app.UserLogin)
+	mux.HandleFunc("GET /userLogout", app.UserLogout)
 
-	// var store = sessions.NewCookieStore([]byte("titkos-kulcs-123"))
-	// type MySessionData struct {
-	// 	UserID   int
-	// 	UserName string
-	// 	Theme    string // Például egyedi színbeállítás
-	// }
-	//
-	//
-	// func LoginHandler(w http.ResponseWriter, r *http.Request) {
-	// 1. Lekérjük a munkamenetet (létrehozza, ha nincs)
-	// session, _ := store.Get(r, "gomail-session")
-
-	// 2. Beletesszük az egyedi adatokat
-	// session.Values["user_id"] = 42
-	// session.Values["user_name"] = "Kiss Lajos"
-
-	// 3. Elmentjük (ez küldi el a sütit a böngészőnek)
-	// session.Save(r, w)
-
-	// fmt.Fprint(w, "Bejelentkezve!")
-	// }
-	//
 	port := ":8080"
 	fmt.Printf("Szerver: http://localhost%s\n", port)
 	log.Fatal(http.ListenAndServe(port, mux))
