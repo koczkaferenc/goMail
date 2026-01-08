@@ -41,6 +41,7 @@ type Alias struct {
 
 type User struct {
 	Id       int
+	Logged   bool
 	Enabled  bool
 	Admin    bool
 	Name     string

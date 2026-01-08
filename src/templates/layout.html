@@ -4,20 +4,17 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>goMail Alkalmazás</title>
+        <title>goMail</title>
         <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
             rel="stylesheet"
-            integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+            integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
             crossorigin="anonymous"
         />
-        <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-        />
+
         <script
-            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
             crossorigin="anonymous"
         ></script>
         <style>
@@ -26,7 +23,7 @@
                 background-color: #f8f9fa;
             }
             .main-content {
-                flex: 1 0 auto; /* Ez biztosítja, hogy kitöltse a teret */
+                flex: 1 0 auto;
             }
             .navbar-brand {
                 font-weight: 700;
@@ -58,16 +55,17 @@
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav ms-auto">
                             <li class="nav-item">
-                                <a class="nav-link active" href="/"
-                                    ><i class="fa-solid fa-house me-1"></i>
-                                    Kezdőlap</a
-                                >
-                            </li>
-                            <li class="nav-item">
+                                {{ if .Session.user_Logged }}
+                                <a class="nav-link" href="/userLogout"
+                                    ><i class="fa-solid fa-users me-1"></i>
+                                    Kijelentkezés
+                                </a>
+                                {{ else }}
                                 <a class="nav-link" href="/userLoginForm"
                                     ><i class="fa-solid fa-users me-1"></i>
                                     Bejelentkezés</a
                                 >
+                                {{ end }}
                             </li>
                             <li class="nav-item dropdown">
                                 <a
@@ -111,9 +109,7 @@
         </header>
 
         <main class="main-content py-5">
-            <div class="container">
-                {{ .UserEmail}} {{template "content" .}}
-            </div>
+            <div class="container">{{ .}} {{template "content" .}}</div>
         </main>
 
         <footer class="footer mt-auto py-4">

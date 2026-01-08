@@ -6,25 +6,19 @@
         <h5 class="mb-0 text-primary fw-bold">
             <i class="fa-solid fa-users-gear me-2"></i>Felhasználók kezelése
         </h5>
-        <a href="/userCreate" class="btn btn-success btn-sm shadow-sm">
+        <a href="/userForm" class="btn btn-success btn-sm shadow-sm">
             <i class="fa-solid fa-plus me-1"></i> Új felhasználó
         </a>
     </div>
-    {{range .Users}}
-    <tr>
-        <td>{{.Id}}</td>
-        <td>{{.Name}}</td>
-    </tr>
-    {{end}}
 
     <div class="card-body p-0">
         <div class="table-responsive">
             <table class="table table-hover align-middle mb-0">
                 <thead class="bg-light text-secondary small fw-bold">
                     <tr>
-                        <th class="ps-4" style="width: 80px">ID</th>
-                        <th>FELHASZNÁLÓ</th>
-                        <th>MŰVELETEK</th>
+                        <th class="ps-4" style="width: 80px">Id</th>
+                        <th>Felhaszáló</th>
+                        <th>Művelet</th>
                     </tr>
                 </thead>
                 <tbody>
