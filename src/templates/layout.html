@@ -1,8 +1,10 @@
 {{define "layout"}}
 <!doctype html>
-<html>
+<html lang="hu" class="h-100">
     <head>
-        <title>Admin</title>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>goMail Alkalmazás</title>
         <link
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
             rel="stylesheet"
@@ -18,17 +20,131 @@
             integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
             crossorigin="anonymous"
         ></script>
+        <style>
+            /* Egyedi stílusok a kényelemért */
+            body {
+                background-color: #f8f9fa;
+            }
+            .main-content {
+                flex: 1 0 auto; /* Ez biztosítja, hogy kitöltse a teret */
+            }
+            .navbar-brand {
+                font-weight: 700;
+                letter-spacing: 1px;
+            }
+            .footer {
+                background-color: #ffffff;
+                border-top: 1px solid #dee2e6;
+            }
+        </style>
     </head>
-    <body>
-        <nav>
-            <a href="/usersList">Felhasználók</a> |
-            <a href="/userForm?id=3">Űrlap</a> |
-            <a href="/userLoginForm">Login</a>
-            <a href="/userLogout">Logout</a>
-        </nav>
-        {{ .UserEmail}} {{template "content" .}}
+    <body class="d-flex flex-column h-100">
+        <header>
+            <nav
+                class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm"
+            >
+                <div class="container">
+                    <a class="navbar-brand" href="/">
+                        <i class="fa-solid fa-paper-plane me-2"></i>goMail
+                    </a>
+                    <button
+                        class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#navbarNav"
+                    >
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="/"
+                                    ><i class="fa-solid fa-house me-1"></i>
+                                    Kezdőlap</a
+                                >
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/userLoginForm"
+                                    ><i class="fa-solid fa-users me-1"></i>
+                                    Bejelentkezés</a
+                                >
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a
+                                    class="nav-link dropdown-toggle"
+                                    href="#"
+                                    id="userDropdown"
+                                    role="button"
+                                    data-bs-toggle="dropdown"
+                                >
+                                    <i class="fa-solid fa-user-circle me-1"></i>
+                                    Fiók
+                                </a>
+                                <ul
+                                    class="dropdown-menu dropdown-menu-end shadow border-0"
+                                >
+                                    <li>
+                                        <a class="dropdown-item" href="/profile"
+                                            ><i
+                                                class="fa-solid fa-gear me-2"
+                                            ></i
+                                            >Beállítások</a
+                                        >
+                                    </li>
+                                    <li><hr class="dropdown-divider" /></li>
+                                    <li>
+                                        <a
+                                            class="dropdown-item text-danger"
+                                            href="/userLogout"
+                                            ><i
+                                                class="fa-solid fa-right-from-bracket me-2"
+                                            ></i
+                                            >Kijelentkezés</a
+                                        >
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
 
-        <footer>© 2026 goMail ISP</footer>
+        <main class="main-content py-5">
+            <div class="container">
+                {{ .UserEmail}} {{template "content" .}}
+            </div>
+        </main>
+
+        <footer class="footer mt-auto py-4">
+            <div class="container text-center text-md-start">
+                <div class="row align-items-center">
+                    <div class="col-md-6 text-muted">
+                        <small
+                            >&copy; 2026 goMail App. Minden jog
+                            fenntartva.</small
+                        >
+                    </div>
+                    <div class="col-md-6 text-center text-md-end mt-3 mt-md-0">
+                        <a
+                            href="/privacy"
+                            class="text-decoration-none text-muted me-3 small"
+                            >Adatvédelem</a
+                        >
+                        <a
+                            href="/terms"
+                            class="text-decoration-none text-muted small"
+                            >Feltételek</a
+                        >
+                        <a href="https://github.com" class="ms-3 text-dark"
+                            ><i class="fa-brands fa-github fa-lg"></i
+                        ></a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>
 {{end}}

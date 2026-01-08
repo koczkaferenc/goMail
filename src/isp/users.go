@@ -21,21 +21,12 @@ func (e *Env) ListUsers(w http.ResponseWriter, r *http.Request) {
 		email = "Vendég" // Alapértelmezett érték, ha nincs bejelentkezve
 	}
 	data := UsersPageData{
-		UserEmail: email,
-		Users: []User{
-			User{
-				Id:   1,
-				Name: "Kiss Lajos",
-			},
-			User{
-				Id:   2,
-				Name: "Szabó Pál",
-			},
-			User{
-				Id:   3,
-				Name: "Nagy József",
-			},
-		},
+	    UserEmail: email,
+	    Users: []User{
+	        {Id: 1, Name: "Kiss Lajos"},
+	        {Id: 2, Name: "Szabó Pál"},
+	        {Id: 3, Name: "Nagy József"},
+	    },
 	}
 	tmpl, _ := template.ParseFiles("templates/layout.html", "templates/usersList.html")
 	tmpl.ExecuteTemplate(w, "layout", data)
