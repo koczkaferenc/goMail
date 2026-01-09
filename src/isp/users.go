@@ -4,7 +4,6 @@ import (
 	"html/template"
 	"log"
 	"net/http"
-	"strconv"
 )
 
 /**************************************************** */
@@ -20,8 +19,6 @@ func (e *Env) Index(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Sablon hiba: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
-
-	// 2. Hibakezelés a rendereléskor
 	err = tmpl.ExecuteTemplate(w, "layout", data)
 	if err != nil {
 		http.Error(w, "Megjelenítési hiba: "+err.Error(), http.StatusInternalServerError)
@@ -33,6 +30,9 @@ func (e *Env) Index(w http.ResponseWriter, r *http.Request) {
 // Felhasználók listázása
 /**************************************************** */
 func (e *Env) ListUsers(w http.ResponseWriter, r *http.Request) {
+	if ! e.amIAdmin(w, r) {
+		return
+	}
 
 	session, _ := e.Store.Get(r, e.Config.Server.Session.Name)
 	users := []User{
@@ -54,33 +54,96 @@ func (e *Env) ListUsers(w http.ResponseWriter, r *http.Request) {
 // Felhasználó űrlapja
 /**************************************************** */
 func (e *Env) UserForm(w http.ResponseWriter, r *http.Request) {
-	userId := r.URL.Query().Get("id")
-	uid, _ := strconv.Atoi(userId)
-	log.Printf("id=%d", 2*uid)
+	if ! e.amIAdmin(w, r) {
+		return
+	}
+	//userId := r.URL.Query().Get("id")
 	User := User{}
-	User.Id = uid
-	User.Name = "Kiss Lajos"
+	User.Name="Koczka Ferenc"
+	session, _ := e.Store.Get(r, e.Config.Server.Session.Name)
+	data := map[string]interface{}{
+		"Session": session.Values,
+		"User": User,
+	}
 	tmpl, _ := template.ParseFiles("templates/layout.html", "templates/userForm.html")
-	tmpl.ExecuteTemplate(w, "layout", User)
+	tmpl.ExecuteTemplate(w, "layout", data)
 }
+
+
 
 /**************************************************** */
 // Felhasználó rögzítése
 /**************************************************** */
-func (e *Env) userStore(w http.ResponseWriter, r *http.Request) {
-	//
+func (e *Env) UserStore(w http.ResponseWriter, r *http.Request) {
+	if ! e.amIAdmin(w, r) {
+		return
+	}
 
+	err := r.ParseForm()
+    if err != nil {
+        http.Error(w, "Hiba az adatok feldolgozásakor", http.StatusBadRequest)
+        return
+    }
+    name := r.FormValue("Name")
+    email := r.FormValue("Email")
+    password := r.FormValue("Password")
+    // Ha a checkbox nincs bepipálva, a FormValue üres string lesz.
+    enabled := r.FormValue("Enabled") == "on"
+    admin := r.FormValue("Admin") == "on"
+
+	session, _ := e.Store.Get(r, e.Config.Server.Session.Name)
+	http.Redirect(w, r, "/usersList", http.StatusSeeOther)
+	log.Printf("userStore: Session=%v ", session.Values)
+	log.Printf("userStore: r=%v ", r)
 }
 
 /**************************************************** */
 // Felhasználó törlése
 /**************************************************** */
-func (e *Env) userDelete(w http.ResponseWriter, r *http.Request) {
+func (e *Env) UserDelete(w http.ResponseWriter, r *http.Request) {
+	if ! e.amIAdmin(w, r) {
+		return
+	}
 	//
 }
 
 /**************************************************** */
-// Login
+// User Profile Form
+/**************************************************** */
+func (e *Env) UserProfileForm(w http.ResponseWriter, r *http.Request) {
+	if ! e.amILogged(w, r) {
+		return
+	}
+	session, _ := e.Store.Get(r, e.Config.Server.Session.Name)
+	data := map[string]interface{}{
+		"Session": session.Values,
+	}
+	tmpl, err := template.ParseFiles("templates/layout.html", "templates/userProfileForm.html")
+	if err != nil {
+		http.Error(w, "Sablon hiba: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+	err = tmpl.ExecuteTemplate(w, "layout", data)
+	if err != nil {
+		http.Error(w, "Megjelenítési hiba: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+}
+
+/**************************************************** */
+// User Profile rögzítése
+/**************************************************** */
+func (e *Env) UserProfileStore(w http.ResponseWriter, r *http.Request) {
+	if ! e.amILogged(w, r) {
+		return
+	}
+	// Rögzítés
+
+	http.Redirect(w, r, "/", http.StatusSeeOther)
+}
+
+/**************************************************** */
+// LoginForm
 /**************************************************** */
 func (e *Env) UserLoginForm(w http.ResponseWriter, r *http.Request) {
 	tmpl, _ := template.ParseFiles("templates/layout.html", "templates/userLoginForm.html")

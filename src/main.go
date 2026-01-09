@@ -36,12 +36,29 @@ func main() {
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /", app.Index)
+	mux.HandleFunc("GET /permissionDenied", app.PermissionDenied)
 	mux.HandleFunc("GET /usersList", app.ListUsers)
 	mux.HandleFunc("GET /userForm", app.UserForm)
+	mux.HandleFunc("POST /userStore", app.UserStore)
+	// mux.HandleFunc("GET /userDelete", app.UserDelete)
+	//
 	mux.HandleFunc("GET /userLoginForm", app.UserLoginForm)
 	mux.HandleFunc("POST /userLogin", app.UserLogin)
 	mux.HandleFunc("GET /userLogout", app.UserLogout)
+	mux.HandleFunc("GET /userProfileForm", app.UserProfileForm)
+	mux.HandleFunc("POST /userProfileStore", app.UserProfileStore)
+
 	mux.HandleFunc("GET /domainsList", app.DomainsList)
+	// mux.HandleFunc("GET /domainForm", app.DomainForm)
+	// mux.HandleFunc("POST /domainStore", app.DomainStore)
+	// mux.HandleFunc("GET /domainDelete", app.DomainDelete)
+	// mux.HandleFunc("GET /domainReport", app.DomainReport)
+
+	// mux.HandleFunc("GET /mboxsList", app.MboxsList)
+	// mux.HandleFunc("GET /mboxForm", app.MboxForm)
+	// mux.HandleFunc("POST /mboxStore", app.MboxStore)
+	// mux.HandleFunc("GET /mboxDelete", app.MboxDelete)
+
 
 	db.Init()
 

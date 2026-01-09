@@ -57,6 +57,9 @@ type User struct {
 // DomainsList
 /**************************************************** */
 func (e *Env) DomainsList(w http.ResponseWriter, r *http.Request) {
+	if ! e.amILogged(w, r) {
+		return
+	}
 	session, _ := e.Store.Get(r, e.Config.Server.Session.Name)
 	Domains := []Domain{
 		{Id: 1, Name: "alma.hu"},
