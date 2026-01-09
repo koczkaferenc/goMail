@@ -117,12 +117,15 @@ func (u *User) LoadByLoginData(email string, password string) error {
 // User:Load()
 /********************************************************* */
 func (u *User) Load(id int) error {
-	err := db.Db.QueryRow("SELECT id, name FROM users WHERE id = ?", id).Scan(&u.Id, &u.Name)
+	log.Printf("user.Load(%d)", id)
+	err := db.Db.QueryRow(
+		"SELECT id, enabled, admin, name, email, created_at, logged_at FROM users WHERE id = ?", id).Scan(
+			&u.Id, &u.Enabled, &u.Admin, &u.Name, &u.Email, &u.CreatedAt, &u.LoggedAt,
+	)
 	if err != nil {
 		log.Println("Error loading user:", err)
 		return err
 	}
-	u.LoadDomains()
 	return nil
 }
 

@@ -4,6 +4,7 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"strconv"
 )
 
 /**************************************************** */
@@ -57,13 +58,20 @@ func (e *Env) UserForm(w http.ResponseWriter, r *http.Request) {
 	if ! e.amIAdmin(w, r) {
 		return
 	}
-	//userId := r.URL.Query().Get("id")
-	User := User{}
-	User.Name="Koczka Ferenc"
+	userId, _ := strconv.Atoi(r.URL.Query().Get("id"))
+	u := User{}
+	if userId > 0 {
+		log.Printf("Adatok beolvasása az adatbázisból, Userid: %d", userId)
+		u.Load(userId)
+		log.Printf("User: %v",u)
+	} else {
+		log.Println("Új user")
+	}
+
 	session, _ := e.Store.Get(r, e.Config.Server.Session.Name)
 	data := map[string]interface{}{
 		"Session": session.Values,
-		"User": User,
+		"User": u,
 	}
 	tmpl, _ := template.ParseFiles("templates/layout.html", "templates/userForm.html")
 	tmpl.ExecuteTemplate(w, "layout", data)

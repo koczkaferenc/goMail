@@ -10,7 +10,7 @@ var Db *sql.DB
 
 func Init() {
 	var err error
-	Db, err = sql.Open("mysql", "gomail:Rochieyiekaba3ee@tcp4(127.0.0.1:3306)/gomail?parseTime=true")
+	Db, err = sql.Open("mysql", "gomail:Rochieyiekaba3ee@tcp(127.0.0.1:3306)/gomail?parseTime=true")
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -5,7 +5,6 @@ import (
 	"log"
 	"net/http"
 	"time"
-	"database/sql"
 
 )
 
@@ -52,8 +51,8 @@ type User struct {
 	Name     string
 	Email    string
 	Password string
-	CreatedAt time.Time
-	LoggedAt sql.NullTime
+	CreatedAt string
+	LoggedAt string
 	Domains  []Domain
 }
 

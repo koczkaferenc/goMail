@@ -1,3 +1,4 @@
+SET NAMES 'utf8mb4';
 
 CREATE TABLE users (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -8,7 +9,7 @@ CREATE TABLE users (
     admin BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     logged_at TIMESTAMP DEFAULT NULL
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- 2. Domainek táblája
 CREATE TABLE domains (
@@ -18,7 +19,7 @@ CREATE TABLE domains (
     mailbox_limit INT DEFAULT 10,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- 3. Mailboxok (Postafiókok) táblája
 CREATE TABLE mailboxes (
@@ -43,7 +44,7 @@ CREATE TABLE mailboxes (
     expires_at DATETIME,
     FOREIGN KEY (domain_id) REFERENCES domains(id) ON DELETE CASCADE,
     UNIQUE KEY idx_email (local_part, domain)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- 4. Aliasok (Átirányítások) táblája
 CREATE TABLE aliases (
@@ -54,7 +55,9 @@ CREATE TABLE aliases (
     addresses TEXT NOT NULL,               -- Célcímek vesszővel elválasztva
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (domain_id) REFERENCES domains(id) ON DELETE CASCADE
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO users (name, email, password, enabled, admin)
     VALUES ('Rendszergazda', 'info@linux-szerver.hu', 'bRsT64%xT', 1, 1);
+INSERT INTO users (name, email, password, enabled, admin)
+    VALUES ('Nagy Ágnes árvíztűrő', 'agi@agrialanc.hu', 'alma', 0, 1);
