@@ -1,0 +1,9 @@
+{{define "content"}}
+<h1>Index</h1>
+
+{{ if .Session.user_Logged }} Bejelentkezve: {{ .Session.user_Name}} {{ else }}
+Nincs bejelentkezve. {{ end }}
+
+<hr />
+Trace:<br />
+{{ .}} {{end}}

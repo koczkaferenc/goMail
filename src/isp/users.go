@@ -8,6 +8,28 @@ import (
 )
 
 /**************************************************** */
+// Index
+/**************************************************** */
+func (e *Env) Index(w http.ResponseWriter, r *http.Request) {
+	session, _ := e.Store.Get(r, e.Config.Server.Session.Name)
+	data := map[string]interface{}{
+		"Session": session.Values,
+	}
+	tmpl, err := template.ParseFiles("templates/layout.html", "templates/index.html")
+	if err != nil {
+		http.Error(w, "Sablon hiba: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// 2. Hibakezelés a rendereléskor
+	err = tmpl.ExecuteTemplate(w, "layout", data)
+	if err != nil {
+		http.Error(w, "Megjelenítési hiba: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+}
+
+/**************************************************** */
 // Felhasználók listázása
 /**************************************************** */
 func (e *Env) ListUsers(w http.ResponseWriter, r *http.Request) {

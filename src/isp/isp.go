@@ -1,6 +1,9 @@
 package isp
 
 import (
+	"html/template"
+	"log"
+	"net/http"
 	"time"
 )
 
@@ -48,4 +51,24 @@ type User struct {
 	Email    string
 	Password string
 	Domains  []Domain
+}
+
+/**************************************************** */
+// DomainsList
+/**************************************************** */
+func (e *Env) DomainsList(w http.ResponseWriter, r *http.Request) {
+	session, _ := e.Store.Get(r, e.Config.Server.Session.Name)
+	Domains := []Domain{
+		{Id: 1, Name: "alma.hu"},
+		{Id: 2, Name: "korte.hu"},
+		{Id: 3, Name: "szilva.hu"},
+	}
+	data := map[string]interface{}{
+		"Domains": Domains,
+		"Session": session.Values,
+	}
+
+	tmpl, _ := template.ParseFiles("templates/layout.html", "templates/domainsList.html")
+	tmpl.ExecuteTemplate(w, "layout", data)
+	log.Printf("%v", session)
 }
