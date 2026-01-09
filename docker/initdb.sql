@@ -6,7 +6,8 @@ CREATE TABLE users (
     password VARCHAR(255) NOT NULL,
     enabled BOOLEAN DEFAULT TRUE,
     admin BOOLEAN DEFAULT FALSE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    logged_at TIMESTAMP DEFAULT NULL
 );
 
 -- 2. Domainek táblája

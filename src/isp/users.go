@@ -84,12 +84,12 @@ func (e *Env) UserStore(w http.ResponseWriter, r *http.Request) {
         http.Error(w, "Hiba az adatok feldolgozásakor", http.StatusBadRequest)
         return
     }
-    name := r.FormValue("Name")
-    email := r.FormValue("Email")
-    password := r.FormValue("Password")
-    // Ha a checkbox nincs bepipálva, a FormValue üres string lesz.
-    enabled := r.FormValue("Enabled") == "on"
-    admin := r.FormValue("Admin") == "on"
+    // name := r.FormValue("Name")
+    // email := r.FormValue("Email")
+    // password := r.FormValue("Password")
+    // // Ha a checkbox nincs bepipálva, a FormValue üres string lesz.
+    // enabled := r.FormValue("Enabled") == "on"
+    // admin := r.FormValue("Admin") == "on"
 
 	session, _ := e.Store.Get(r, e.Config.Server.Session.Name)
 	http.Redirect(w, r, "/usersList", http.StatusSeeOther)
@@ -150,18 +150,6 @@ func (e *Env) UserLoginForm(w http.ResponseWriter, r *http.Request) {
 	tmpl.ExecuteTemplate(w, "layout", nil)
 }
 
-func getUserData(email string, password string) (User, error) {
-	return User{
-		Id:       1,
-		Logged:   true,
-		Enabled:  true,
-		Admin:    true,
-		Name:     "Koczka Ferenc",
-		Email:    email,
-		Password: password,
-	}, nil
-}
-
 /**************************************************** */
 // Login
 /**************************************************** */
@@ -173,7 +161,6 @@ func (e *Env) UserLogin(w http.ResponseWriter, r *http.Request) {
 
 	email := r.FormValue("email")
 	password := r.FormValue("password")
-	log.Printf("user: %s, password: %s", email, password)
 
 	// Ellenőrzések
 	Errors := make(map[string]string)
@@ -196,7 +183,7 @@ func (e *Env) UserLogin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if u, err = getUserData(email, password); err != nil {
+	if err = u.LoadByLoginData(email, password); err != nil {
 		Data["ErrMsg"] = "Hiba! Érvénytelen bejelentkezési adatok."
 		tmpl, _ := template.ParseFiles("templates/layout.html", "templates/userLoginForm.html")
 		tmpl.ExecuteTemplate(w, "layout", Data)
@@ -205,11 +192,12 @@ func (e *Env) UserLogin(w http.ResponseWriter, r *http.Request) {
 	log.Printf("User: %v", u)
 	session, _ := e.Store.Get(r, e.Config.Server.Session.Name)
 	session.Values["user_Id"] = u.Id
-	session.Values["user_Logged"] = u.Logged
+	session.Values["user_Logged"] = true
+	session.Values["user_Name"] = u.Name
 	session.Values["user_Enabled"] = u.Enabled
 	session.Values["user_Admin"] = u.Admin
-	session.Values["user_Name"] = u.Name
-	session.Values["user_Email"] = u.Email
+	log.Printf("........................")
+
 	session.Save(r, w)
 	log.Printf("Session: %v", session.Values)
 	http.Redirect(w, r, "/", http.StatusSeeOther)

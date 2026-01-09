@@ -1,9 +1,9 @@
 package main
 
 import (
-	"demo/db"
+	"goMail/db"
 	"fmt"
-	"demo/user"
+	"goMail/user"
 )
 
 func main() {

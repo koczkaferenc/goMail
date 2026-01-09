@@ -5,7 +5,7 @@ services:
     ports:
       - 3306:3306
     volumes:
-      - ./mysql-data:/var/lib/mysql
+      #- ./mysql-data:/var/lib/mysql
       - ./initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
     environment:
       MYSQL_USER: ${MYSQL_USER}
@@ -13,11 +13,3 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_ROOT_HOST: ${MYSQL_ROOT_HOST}
-
-  //gomail:
-  //  container_name: ${CONTAINER_NAME}-goMail
-  //  build: goMail
-  //  volumes:
-    //    - ./config.yaml:/config.yaml
-    //  ports:
-      //    - 5555:80

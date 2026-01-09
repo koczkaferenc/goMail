@@ -5,6 +5,8 @@ import (
 	"log"
 	"net/http"
 	"time"
+	"database/sql"
+
 )
 
 type Domain struct {
@@ -50,6 +52,8 @@ type User struct {
 	Name     string
 	Email    string
 	Password string
+	CreatedAt time.Time
+	LoggedAt sql.NullTime
 	Domains  []Domain
 }
 
