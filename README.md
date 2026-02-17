@@ -10,3 +10,11 @@ Levelező rendszer
 * goMail adminisztrációs felület
 * Exim4 SMTP szerver
 * Fail2Ban behatolás-megelőzés
+
+## Telepítés
+
+**DMarc, DKim és SPF rekordok elkészítése**
+
+**Tanúsítvány generálása**
+
+Először el kell készíteni a szükséges tanúsítványokat, amelyet a
