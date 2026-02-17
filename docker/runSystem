@@ -1,6 +1,4 @@
 #!/bin/bash
 docker-compose down
-docker rm gomail-dovecot
-docker image rm docker_dovecot
 [ -d data/run ] && rm -r data/run
-docker-compose up --build dovecot
+docker-compose up

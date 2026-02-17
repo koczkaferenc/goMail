@@ -12,7 +12,10 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Vmail felhasználó létrehozása
-RUN groupadd -g 90 vmail && useradd -u 90 -g vmail -d /var/mail -s /bin/false vmail
+RUN groupadd -g 90 vmail \
+ && useradd -r -u 90 -g 90 -d /var/mail -s /bin/false vmail \
+ && mkdir -p /var/mail \
+ && chown -R vmail:vmail /var/mail
 
 # KRITIKUS: Teljes takarítás - ne maradjanak gyári konfig töredékek
 RUN rm -rf /etc/dovecot/*

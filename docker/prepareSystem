@@ -1,5 +1,6 @@
-docker image rm sysinit
-docker build -t sysinit -f sysinit/Dockerfile .
+#!/bin/bash
+[ -d data/run ] && rm -r data/run
+docker build -t sysinit -f sysinit/Dockerfile . >/dev/null 2>/dev/null
 docker run -it --rm --name sysinit \
     -v ./data:/data \
     -v ./data/etc/letsencrypt:/etc/letsencrypt \

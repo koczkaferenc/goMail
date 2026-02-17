@@ -43,6 +43,7 @@ CREATE TABLE IF NOT EXISTS mboxes (
     vacationsub TEXT DEFAULT NULL,
     vacationmsg TEXT DEFAULT NULL,
     mboxsize INTEGER DEFAULT 0,
+    quotasize INTEGER DEFAULT 100000,
     lastlogged TEXT DEFAULT NULL,
     lastprotocol TEXT DEFAULT NULL,
     UNIQUE(localpart, domain),

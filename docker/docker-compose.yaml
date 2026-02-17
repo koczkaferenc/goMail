@@ -7,7 +7,7 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ./nginx-autoconfig.conf.template:/etc/nginx/templates/default.conf.template
+      - ./autoconfigurator/nginx.conf.template:/etc/nginx/templates/default.conf.template
       - ./data/etc/letsencrypt:/etc/letsencrypt:ro
     environment:
       - MAILDOMAIN=${MAILDOMAIN}

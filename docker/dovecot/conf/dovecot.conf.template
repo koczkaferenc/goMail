@@ -38,8 +38,16 @@ pop3_uidl_format = %08Xu%08Xv
 
 service lmtp {
   unix_listener lmtp {
+    user = vmail
+    group = vmail
     mode = 0666
   }
+}
+
+plugin {
+  quota = maildir:User quota
+  # Általános szabály (default)
+  quota_rule = *:storage=10M
 }
 
 log_path = /var/log/dovecot/dovecot.log
