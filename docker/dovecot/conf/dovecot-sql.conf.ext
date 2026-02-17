@@ -1,0 +1,8 @@
+driver = sqlite
+connect = /etc/dovecot/gomail.db
+
+# Jelszó lekérdezése
+password_query = SELECT password FROM mboxes WHERE localpart = '%n' AND domain = '%d' AND enabled = 1
+
+# Felhasználó lekérdezése
+user_query = SELECT home, uid, gid, 'maildir:' || home AS mail FROM mboxes WHERE localpart = '%n' AND domain = '%d'

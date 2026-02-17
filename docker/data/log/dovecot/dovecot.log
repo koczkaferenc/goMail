@@ -1,0 +1,16 @@
+Feb 17 17:22:18 auth-worker(18): Error: conn unix:auth-worker (pid=17,uid=100): auth-worker<1>: sql(info@koczka.eu,193.225.35.215,<jl9FUAhL3trB4SPX>): Invalid password in passdb: Not a valid MD5-CRYPT or PLAIN-MD5 password
+Feb 17 17:26:20 master: Warning: Killed with signal 15 (by pid=0 uid=0 code=kill)
+Feb 17 17:27:44 pop3(info@koczka.eu): Error: Mail access for users with UID 90 not permitted (see first_valid_uid in config file, uid from userdb lookup).
+Feb 17 17:31:18 master: Warning: Killed with signal 15 (by pid=0 uid=0 code=kill)
+Feb 17 17:31:36 auth-worker(18): Error: conn unix:auth-worker (pid=17,uid=100): auth-worker<1>: sql(info@koczka.eu,192.168.240.1,<euJ+cQhL1LnAqPAB>): Password query failed: near "password_query": syntax error
+Feb 17 17:32:06 master: Warning: Killed with signal 15 (by pid=0 uid=0 code=kill)
+Feb 17 17:32:28 auth-worker(18): Error: conn unix:auth-worker (pid=17,uid=100): auth-worker<1>: sql(info@koczka.eu,172.18.0.1,<0wqedAhLAsKsEgAB>): Password query failed: near "password_query": syntax error
+Feb 17 17:32:41 master: Warning: Killed with signal 15 (by pid=0 uid=0 code=kill)
+Feb 17 17:34:44 pop3(info@koczka.eu): Error: Mail access for users with UID 90 not permitted (see first_valid_uid in config file, uid from userdb lookup).
+Feb 17 17:35:34 master: Warning: Killed with signal 15 (by pid=0 uid=0 code=kill)
+Feb 17 17:35:50 pop3(info@koczka.eu)<19><SjmggAhLxtSsFAAB>: Error: mkdir(/var/mail/koczka.eu/info/Maildir) failed: Permission denied (euid=90(vmail) egid=90(vmail) missing +w perm: /var/mail, dir owned by 0:0 mode=0755)
+Feb 17 17:35:50 pop3(info@koczka.eu)<19><SjmggAhLxtSsFAAB>: Error: mkdir(/var/mail/koczka.eu/info/Maildir) failed: Permission denied (euid=90(vmail) egid=90(vmail) missing +w perm: /var/mail, dir owned by 0:0 mode=0755)
+Feb 17 17:35:50 pop3(info@koczka.eu)<19><SjmggAhLxtSsFAAB>: Error: Mailbox INBOX: Failed to autocreate mailbox: Internal error occurred. Refer to server log for more information. [2026-02-17 17:35:50]
+Feb 17 17:35:50 pop3(info@koczka.eu)<19><SjmggAhLxtSsFAAB>: Error: Couldn't open INBOX: Mailbox INBOX: Failed to autocreate mailbox: Internal error occurred. Refer to server log for more information. [2026-02-17 17:35:50]
+Feb 17 17:38:32 master: Warning: Killed with signal 15 (by pid=0 uid=0 code=kill)
+Feb 17 17:39:45 master: Warning: Killed with signal 15 (by pid=0 uid=0 code=kill)

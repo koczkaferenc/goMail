@@ -1,0 +1,19 @@
+Feb 17 17:22:06 master: Info: Dovecot v2.3.19.1 (9b53102964) starting up for imap, pop3, lmtp
+Feb 17 17:25:07 pop3-login: Info: Disconnected: Inactivity (auth failed, 1 attempts in 169 secs): user=<info@koczka.eu>, method=PLAIN, rip=193.225.35.215, lip=192.168.208.2, session=<jl9FUAhL3trB4SPX>
+Feb 17 17:27:16 master: Info: Dovecot v2.3.19.1 (9b53102964) starting up for imap, pop3, lmtp
+Feb 17 17:27:44 pop3-login: Info: Login: user=<info@koczka.eu>, method=PLAIN, rip=192.168.224.1, lip=192.168.224.2, mpid=19, session=<1RywYwhLrLbAqOAB>
+Feb 17 17:31:27 master: Info: Dovecot v2.3.19.1 (9b53102964) starting up for imap, pop3, lmtp
+Feb 17 17:32:15 master: Info: Dovecot v2.3.19.1 (9b53102964) starting up for imap, pop3, lmtp
+Feb 17 17:33:53 master: Info: Dovecot v2.3.19.1 (9b53102964) starting up for imap, pop3, lmtp
+Feb 17 17:34:44 pop3-login: Info: Login: user=<info@koczka.eu>, method=PLAIN, rip=172.19.0.1, lip=172.19.0.2, mpid=19, session=<+a+5fAhLHrmsEwAB>
+Feb 17 17:35:41 master: Info: Dovecot v2.3.19.1 (9b53102964) starting up for imap, pop3, lmtp
+Feb 17 17:35:50 pop3-login: Info: Login: user=<info@koczka.eu>, method=PLAIN, rip=172.20.0.1, lip=172.20.0.2, mpid=19, session=<SjmggAhLxtSsFAAB>
+Feb 17 17:35:50 pop3(info@koczka.eu)<19><SjmggAhLxtSsFAAB>: Info: Disconnected: Couldn't open INBOX: Mailbox INBOX: Failed to autocreate mailbox: Internal error occurred. Refer to server log for more information. [2026-02-17 17:35:50] top=0/0, retr=0/0, del=0/0, size=0
+Feb 17 17:36:22 imap-login: Info: Disconnected: Connection closed (no auth attempts in 8 secs): user=<>, rip=206.168.34.53, lip=172.20.0.2, TLS: Connection closed, session=<Ff6HgghL4lLOqCI1>
+Feb 17 17:36:27 imap-login: Info: Disconnected: Too many invalid commands (no auth attempts in 1 secs): user=<>, rip=206.168.34.53, lip=172.20.0.2, session=<597hgghLOF/OqCI1>
+Feb 17 17:36:31 imap-login: Info: Disconnected: Too many invalid commands (no auth attempts in 0 secs): user=<>, rip=206.168.34.53, lip=172.20.0.2, session=<zq0WgwhLTl/OqCI1>
+Feb 17 17:36:33 imap-login: Info: Disconnected: Too many invalid commands (no auth attempts in 1 secs): user=<>, rip=206.168.34.53, lip=172.20.0.2, session=<2w8wgwhLeMrOqCI1>
+Feb 17 17:36:35 imap-login: Info: Disconnected: Too many invalid commands (no auth attempts in 1 secs): user=<>, rip=206.168.34.53, lip=172.20.0.2, session=<r79QgwhLesrOqCI1>
+Feb 17 17:38:40 master: Info: Dovecot v2.3.19.1 (9b53102964) starting up for imap, pop3, lmtp
+Feb 17 17:38:48 pop3-login: Info: Login: user=<info@koczka.eu>, method=PLAIN, rip=172.21.0.1, lip=172.21.0.2, mpid=21, session=<8lRHiwhLDpGsFQAB>
+Feb 17 17:39:01 pop3(info@koczka.eu)<21><8lRHiwhLDpGsFQAB>: Info: Disconnected: Logged out top=0/0, retr=0/0, del=0/0, size=0

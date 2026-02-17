@@ -18,18 +18,41 @@ services:
       - AUTODISCOVER_HOST=${AUTODISCOVER_HOST}
     restart: always
 
+  dovecot:
+    build: ./dovecot
+    container_name: ${CONTAINER_NAME}-dovecot
+    ports:
+      - "143:143"   # IMAP
+      - "993:993"   # IMAPS
+      - "110:110"   # POP3
+      - "995:995"   # POP3S
+    environment:
+      - MAILDOMAIN=${MAILDOMAIN}
+      - MAIL_HOST=${MAIL_HOST}      
+    volumes:
+      - ./data/gomail.db:/etc/dovecot/gomail.db:ro
+      - ./data/mail:/var/mail
+      - ./data/etc/letsencrypt:/etc/letsencrypt:ro
+      - ./data/log/dovecot:/var/log/dovecot
+      # LMTP socket megosztása (majd az SMTP konténernek kelleni fog)
+      - ./data/run/dovecot:/var/run/dovecot
+    restart: always
+
   # Webmail konténer (alap Nginx)
   wm:
     image: nginx:alpine
     container_name: ${WEBMAIL_HOST}
     restart: always
-    # Ide csatolhatod majd a webmail fájljait:
-    # - ./webmail-html:/usr/share/nginx/html:ro
+    volumes:
+    - ./webroot-wm:/usr/share/nginx/html:ro
 
   # Webadmin konténer (alap Nginx)
   ma:
     image: nginx:alpine
     container_name: ${MAILADMIN_HOST}
     restart: always
-    # Ide csatolhatod majd az admin panel fájljait:
-    # - ./admin-html:/usr/share/nginx/html:ro
+    volumes:
+    - ./webroot-ma:/usr/share/nginx/html:ro
+
+volumes:
+  dovecot_sockets:

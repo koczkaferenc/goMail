@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS aliases (
 );
 
 -- Jelszó: nagyonTitkos
-INSERT INTO users (username, password, admin, realname) VALUES ('koczka.ferenc','d66e86e76b313e42bfdd95fb6c2dabd69a049e4cd23de7ddf5315513f9ae68fc',1, 'Koczka Ferenc');
+INSERT INTO users (username, password, admin, realname) VALUES ('koczka.ferenc','{SHA256-CRYPT}$5$MlHYMq97GNNiSKnA$7qPjr60o3NAm6k5oVzLGyzGwFIXzkWMfgbpNqgs1Cu8',1, 'Koczka Ferenc');
 INSERT INTO domains (domain) VALUES ('koczka.eu');
 INSERT INTO ud (userid, domainid) VALUES (1,1);
-INSERT INTO mboxes (localpart, domain, password, home) VALUES ('info','koczka.eu','d66e86e76b313e42bfdd95fb6c2dabd69a049e4cd23de7ddf5315513f9ae68fc', '/var/mail/koczka.eu/info/Maildir');
+INSERT INTO mboxes (localpart, domain, password, home) VALUES ('info','koczka.eu','{SHA256-CRYPT}$5$MlHYMq97GNNiSKnA$7qPjr60o3NAm6k5oVzLGyzGwFIXzkWMfgbpNqgs1Cu8', '/var/mail/koczka.eu/info/Maildir');

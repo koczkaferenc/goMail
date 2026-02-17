@@ -1,0 +1,47 @@
+listen = *
+protocols = imap pop3 lmtp
+
+mail_location = maildir:/var/mail/%d/%n/Maildir
+login_greeting = Lnx GoMail Ready.
+
+ssl = yes
+ssl_cert = </etc/letsencrypt/live/${MAIL_HOST}.${MAILDOMAIN}/fullchain.pem
+ssl_key  = </etc/letsencrypt/live/${MAIL_HOST}.${MAILDOMAIN}/privkey.pem
+
+disable_plaintext_auth = no
+auth_mechanisms = plain login
+
+first_valid_uid = 90
+first_valid_gid = 90
+
+passdb {
+  driver = sql
+  args = /etc/dovecot/dovecot-sql.conf.ext
+}
+
+userdb {
+  driver = sql
+  args = /etc/dovecot/dovecot-sql.conf.ext
+}
+
+service imap-login {
+  inet_listener imap {
+    port = 143
+  }
+  inet_listener imaps {
+    port = 993
+    ssl = yes
+  }
+}
+
+pop3_uidl_format = %08Xu%08Xv
+
+service lmtp {
+  unix_listener lmtp {
+    mode = 0666
+  }
+}
+
+log_path = /var/log/dovecot/dovecot.log
+info_log_path = /var/log/dovecot/dovecot-info.log
+debug_log_path = /var/log/dovecot/dovecot-debug.log
