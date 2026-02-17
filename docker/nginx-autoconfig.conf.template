@@ -1,59 +1,102 @@
+# --- HTTP -> HTTPS átirányítás ---
 server {
     listen 80;
+    server_name ${MAIL_HOST}.${MAILDOMAIN} ${WEBMAIL_HOST}.${MAILDOMAIN} ${MAILADMIN_HOST}.${MAILDOMAIN} autoconfig.${MAILDOMAIN} autodiscover.${MAILDOMAIN};
+    return 301 https://$host$request_uri;
+}
+
+# --- 1. Autoconfig & Autodiscover (MTA cert használatával) ---
+server {
+    listen 443 ssl;
     server_name autoconfig.${MAILDOMAIN} autodiscover.${MAILDOMAIN};
 
-    # Thunderbird autoconfig
+    ssl_certificate     /etc/letsencrypt/live/${AUTOCONFIG_HOST}.${MAILDOMAIN}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/${AUTOCONFIG_HOST}.${MAILDOMAIN}/privkey.pem;
+
     location /mail/config-v1.1.xml {
         default_type application/xml;
         return 200 '<?xml version="1.0" encoding="UTF-8"?>
-        <clientConfig version="1.1">
-            <emailProvider id="${MAILDOMAIN}">
-                <domain>${MAILDOMAIN}</domain>
-                <incomingServer type="imap">
-                    <hostname>${MAILHOST}.${MAILDOMAIN}</hostname>
-                    <port>993</port>
-                    <socketType>SSL</socketType>
-                    <authentication>password-cleartext</authentication>
-                    <username>%EMAILADDRESS%</username>
-                </incomingServer>
-                <outgoingServer type="smtp">
-                    <hostname>${MAILHOST}.${MAILDOMAIN}</hostname>
-                    <port>465</port>
-                    <socketType>SSL</socketType>
-                    <authentication>password-cleartext</authentication>
-                    <username>%EMAILADDRESS%</username>
-                </outgoingServer>
-            </emailProvider>
-        </clientConfig>';
+            <clientConfig version="1.1">
+                <emailProvider id="${MAILDOMAIN}">
+                    <domain>${MAILDOMAIN}</domain>
+                    <displayName>Koczka Mail Service</displayName>
+                    <displayShortName>Koczka</displayShortName>
+                    
+                    <incomingServer type="imap">
+                        <hostname>${MAIL_HOST}.${MAILDOMAIN}</hostname>
+                        <port>993</port>
+                        <socketType>SSL</socketType>
+                        <authentication>password-cleartext</authentication>
+                        <username>%EMAILADDRESS%</username>
+                    </incomingServer>
+
+                    <outgoingServer type="smtp">
+                        <hostname>${MAIL_HOST}.${MAILDOMAIN}</hostname>
+                        <port>465</port>
+                        <socketType>SSL</socketType>
+                        <authentication>password-cleartext</authentication>
+                        <username>%EMAILADDRESS%</username>
+                    </outgoingServer>
+                </emailProvider>
+            </clientConfig>';
     }
 
-    # Outlook Autodiscover
     location ~* /Autodiscover/Autodiscover.xml {
         default_type application/xml;
         return 200 '<?xml version="1.0" encoding="utf-8"?>
         <Autodiscover xmlns="http://schemas.microsoft.com/exchange/autodiscover/responseschema/2006">
           <Response xmlns="http://schemas.microsoft.com/exchange/autodiscover/outlook/responseschema/2006a">
             <Account>
-              <AccountType>email</AccountType>
-              <Action>settings</Action>
               <Protocol>
                 <Type>IMAP</Type>
-                <Server>${MAILHOST}.${MAILDOMAIN}</Server>
+                <Server>${MAIL_HOST}.${MAILDOMAIN}</Server>
                 <Port>993</Port>
                 <SSL>on</SSL>
-                <AuthRequired>on</AuthRequired>
                 <LoginName>%EmailAddress%</LoginName>
               </Protocol>
               <Protocol>
                 <Type>SMTP</Type>
-                <Server>${MAILHOST}.${MAILDOMAIN}</Server>
+                <Server>${MAIL_HOST}.${MAILDOMAIN}</Server>
                 <Port>465</Port>
                 <SSL>on</SSL>
-                <AuthRequired>on</AuthRequired>
                 <LoginName>%EmailAddress%</LoginName>
               </Protocol>
             </Account>
           </Response>
         </Autodiscover>';
+    }
+}
+
+# --- 2. Webmail Proxy (wm cert használatával) ---
+server {
+    listen 443 ssl;
+    server_name ${WEBMAIL_HOST}.${MAILDOMAIN};
+
+    ssl_certificate     /etc/letsencrypt/live/${WEBMAIL_HOST}.${MAILDOMAIN}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/${WEBMAIL_HOST}.${MAILDOMAIN}/privkey.pem;
+
+    location / {
+        proxy_pass http://${WEBMAIL_HOST}:80;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+
+# --- 3. Webadmin Proxy (ma cert használatával) ---
+server {
+    listen 443 ssl;
+    server_name ${MAILADMIN_HOST}.${MAILDOMAIN};
+
+    ssl_certificate     /etc/letsencrypt/live/${MAILADMIN_HOST}.${MAILDOMAIN}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/${MAILADMIN_HOST}.${MAILDOMAIN}/privkey.pem;
+
+    location / {
+        proxy_pass http://${MAILADMIN_HOST}:80;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
     }
 }

@@ -56,27 +56,9 @@ CREATE TABLE IF NOT EXISTS aliases (
     UNIQUE(localpart, domain),
     FOREIGN KEY (domain) REFERENCES domains(domain) ON DELETE CASCADE ON UPDATE CASCADE				
 );
+
 -- Jelszó: nagyonTitkos
 INSERT INTO users (username, password, admin, realname) VALUES ('koczka.ferenc','d66e86e76b313e42bfdd95fb6c2dabd69a049e4cd23de7ddf5315513f9ae68fc',1, 'Koczka Ferenc');
--- INSERT INTO domains (domain) VALUES ('linux-szerver.hu');
--- INSERT INTO domains (domain) VALUES ('agrialanc.hu');
--- INSERT INTO domains (domain) VALUES ('boronafog.hu');
--- INSERT INTO domains (domain) VALUES ('iparigorgoslanc.hu');
--- INSERT INTO domains (domain) VALUES ('sebe.hu');
--- INSERT INTO domains (domain) VALUES ('pppress.hu.hu');
--- INSERT INTO ud (userid, domainid) VALUES (1,1);
--- INSERT INTO ud (userid, domainid) VALUES (2,2);
--- INSERT INTO ud (userid, domainid) VALUES (2,3);
--- INSERT INTO ud (userid, domainid) VALUES (2,4);
--- 
--- INSERT INTO ud (userid, domainid) VALUES (3,2);
--- INSERT INTO ud (userid, domainid) VALUES (3,5);
--- INSERT INTO ud (userid, domainid) VALUES (3,6);
--- 
--- INSERT INTO mboxes (localpart, domain, password, home) VALUES ('info','linux-szerver.hu','d66e86e76b313e42bfdd95fb6c2dabd69a049e4cd23de7ddf5315513f9ae68fc', '/var/mail/linux-szerver.hu/info/Maildir');
--- INSERT INTO mboxes (localpart, domain, password, home) VALUES ('test','linux-szerver.hu','d66e86e76b313e42bfdd95fb6c2dabd69a049e4cd23de7ddf5315513f9ae68fc', '/var/mail/linux-szerver.hu/test/Maildir');
--- INSERT INTO mboxes (localpart, domain, password, home) VALUES ('nagyagnes','agrialanc.hu','d66e86e76b313e42bfdd95fb6c2dabd69a049e4cd23de7ddf5315513f9ae68fc', '/var/mail/agrialanc.hu/nagyagnes/Maildir');
--- INSERT INTO mboxes (localpart, domain, password, home) VALUES ('agria','agrialanc.hu','d66e86e76b313e42bfdd95fb6c2dabd69a049e4cd23de7ddf5315513f9ae68fc', '/var/mail/agrialanc.hu/agria/Maildir');
--- 
--- INSERT INTO aliases (localpart, domain, addresses) VALUES ('allas','linux-szerver.hu','info@linux-szerver.hu');
--- INSERT INTO aliases (localpart, domain, addresses) VALUES ('allas','agrialanc.hu','info@agrialanc.hu');
+INSERT INTO domains (domain) VALUES ('koczka.eu');
+INSERT INTO ud (userid, domainid) VALUES (1,1);
+INSERT INTO mboxes (localpart, domain, password, home) VALUES ('info','koczka.eu','d66e86e76b313e42bfdd95fb6c2dabd69a049e4cd23de7ddf5315513f9ae68fc', '/var/mail/koczka.eu/info/Maildir');

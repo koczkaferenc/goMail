@@ -5,9 +5,31 @@ services:
     container_name: ${CONTAINER_NAME}-autoconfig
     ports:
       - "80:80"
+      - "443:443"
     volumes:
       - ./nginx-autoconfig.conf.template:/etc/nginx/templates/default.conf.template
+      - ./data/etc/letsencrypt:/etc/letsencrypt:ro
     environment:
       - MAILDOMAIN=${MAILDOMAIN}
-      - MAILHOST=${MAILHOST}
-    restart: always    
+      - MAIL_HOST=${MAIL_HOST}
+      - WEBMAIL_HOST=${WEBMAIL_HOST}
+      - MAILADMIN_HOST=${MAILADMIN_HOST}
+      - AUTOCONFIG_HOST=${AUTOCONFIG_HOST}
+      - AUTODISCOVER_HOST=${AUTODISCOVER_HOST}
+    restart: always
+
+  # Webmail konténer (alap Nginx)
+  wm:
+    image: nginx:alpine
+    container_name: ${WEBMAIL_HOST}
+    restart: always
+    # Ide csatolhatod majd a webmail fájljait:
+    # - ./webmail-html:/usr/share/nginx/html:ro
+
+  # Webadmin konténer (alap Nginx)
+  ma:
+    image: nginx:alpine
+    container_name: ${MAILADMIN_HOST}
+    restart: always
+    # Ide csatolhatod majd az admin panel fájljait:
+    # - ./admin-html:/usr/share/nginx/html:ro
