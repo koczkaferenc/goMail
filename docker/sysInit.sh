@@ -1,14 +1,16 @@
 #!/bin/bash
 . .env
-MAILSERVER_FQDN=${MAILHOST}.${MAILDOMAIN}
+MAILSERVER_FQDN=${MAIL_HOST}.${MAILDOMAIN}
+WEBMAIL_FQDN=${WEBMAIL_HOST}.${MAILDOMAIN}
+MAILADMIN_FQDN=${MAILADMIN_HOST}.${MAILDOMAIN}
 DATA_DIR=data
 [ ! -d ${DATA_DIR} ] && mkdir -p ${DATA_DIR}
+CURRENT_IP=$(curl -s https://ifconfig.me)
 
 # -----------------------------------------------------
 # SPF rekord ellenőrzése
 # -----------------------------------------------------
 echo -n "[?] SPF rekord ellenőrzése: "
-CURRENT_IP=$(curl -s https://ifconfig.me)
 SPF_IPS=$(dig +short TXT "$MAILDOMAIN" | grep "v=spf1" | grep -oE 'ip4:[^ ]+' | cut -d':' -f2)
 FOUND=0
 for IP in $SPF_IPS; do
@@ -23,12 +25,12 @@ if [ $FOUND -eq 0 ]; then
     echo "[-] Készítsd el az alábbi rekordot: v=spf1 ip4:${CURRENT_IP} -all"
     exit 1
 fi
-echo "[+] OK: (${CURRENT_IP})"
+echo "✅ (${CURRENT_IP})"
 
 # -----------------------------------------------------
 # DKIM ellenőrzése/előállítása
 # -----------------------------------------------------
-echo -n "[?] DKIM rekord ellenőrzése: ${DKIM_SELECTOR}._domainkey.${MAILDOMAIN}"
+echo -n "[?] DKIM rekord ellenőrzése: "
 PRIV_KEY="${DATA_DIR}/dkim_private.txt"
 PUB_KEY_FILE="${DATA_DIR}/dkim_public.txt"
 
@@ -45,7 +47,7 @@ fi
 LOCAL_PUB_KEY=$(cat "$PUB_KEY_FILE")
 DNS_RECORD=$(dig +short TXT "${DKIM_SELECTOR}._domainkey.${MAILDOMAIN}" | tr -d '" \n\r')
 if [[ -n "$DNS_RECORD" && "$DNS_RECORD" == *"p=$LOCAL_PUB_KEY"* ]]; then
-    echo " OK."
+    echo " ✅ ${DKIM_SELECTOR}._domainkey.${MAILDOMAIN}"
 else
     echo ""
     if [ -z "$DNS_RECORD" ]; then
@@ -59,27 +61,78 @@ else
     exit 2
 fi
 
+# -----------------------------------------------------
+# DMARC ellenőrzése/előállítása
+# -----------------------------------------------------
 echo -n "[?] DMARC rekord ellenőrzése: "
 RECORD=$(dig +short TXT _dmarc."$MAILDOMAIN")
 if [ -n "$RECORD" ]; then
-    echo "OK: $RECORD"
+    echo "✅ $RECORD"
 else
     echo " hiányzik."
     echo "    [-] Vedd fel a következő TXT rekordot a DNS-be:"
     echo "    Kulcs: TXT _dmarc"
     echo "    Érték: v=DMARC1; p=quarantine;"
+    exit 3
 fi
 
-exit
+# -----------------------------------------------------
+# DNS rekordok ellenőrzése
+# -----------------------------------------------------
+for T in $MAILSERVER_FQDN $WEBMAIL_FQDN $MAILADMIN_FQDN ; do
+    echo -n "[?] $T ellenőrzése: "
+    RESOLVED_IP=$(dig @8.8.8.8 +short "$T")
+    if [ -z "$RESOLVED_IP" ]; then
+        echo "'A' rekord hiányzik: $T -> $CURRENT_IP"
+        exit 4
+    elif [ "$RESOLVED_IP" != "$CURRENT_IP" ]; then
+        echo "'A' rekord hibás címre mutat: $T -> $CURRENT_IP"
+        exit 4
+    else
+        echo "✅ ${RESOLVED_IP}"
+    fi          
+done
 
-# Tanúsítványok létrehozása
-set -x
-docker run --rm -it \
-  -v "/data/etc/letsencrypt:/etc/letsencrypt" \
-  -v "/data/var/lib/letsencrypt:/var/lib/letsencrypt" \
-  -p 80:80 \
-  certbot/certbot certonly ${LETSENCRYPT_DRY_RUN} --standalone \
-  -d ${MAILDOMAIN} \
-  --non-interactive \
-  --agree-tos \
-  --email ${LETSENCRYPT_EMAIL_ADDRESS}
+# -----------------------------------------------------
+# Reverse DNS ellenőrzése
+# -----------------------------------------------------
+echo -n "[?] Reverse DNS ellenőrzése: "
+REVERSE_DNS=$(host "$CURRENT_IP" | awk '{print $NF}' | sed 's/\.$//')
+if [ -z "$REVERSE_DNS" ] || [[ "$REVERSE_DNS" == *"not-found"* ]]; then
+    echo "hiba. Az elvárt válasz: ${MAILSERVER_FQDN}"
+    exit 5
+elif [ "$REVERSE_DNS" != "$MAILSERVER_FQDN" ]; then
+    echo "hiba. Az elvárt válasz: ${MAILSERVER_FQDN}"
+    exit 5
+else
+    echo "✅ ${CURRENT_IP}"
+fi
+
+# -----------------------------------------------------
+# Tanúsítványok ellenőrzése/előállítása
+# -----------------------------------------------------
+for T in $MAILSERVER_FQDN $WEBMAIL_FQDN $MAILADMIN_FQDN ; do
+    echo -n "[?] Tanúsítvány: "
+    CERT_FILE="${DATA_DIR}/etc/letsencrypt/live/${T}/fullchain.pem"
+    if [ ! -f "$CERT_FILE" ]; then
+        echo -n " ..."
+        docker run --rm -it \
+        -v "./${DATA_DIR}/etc/letsencrypt:/etc/letsencrypt" \
+        -v "./${DATA_DIR}/var/lib/letsencrypt:/var/lib/letsencrypt" \
+        -p 80:80 \
+        certbot/certbot certonly ${LETSENCRYPT_DRY_RUN} --standalone \
+        -d ${T} \
+        --non-interactive \
+        --agree-tos \
+        --email ${LETSENCRYPT_EMAIL_ADDRESS} > /dev/null 2>&1
+
+        if [ $? -eq 0 ]; then
+                echo " ✅ ${T}"
+            else
+                echo " Hiba a generálás során. Létezik a ${T} domain?"
+                exit 6
+        fi
+    else
+        echo "✅ ${T}"
+    fi
+done

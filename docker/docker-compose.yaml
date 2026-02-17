@@ -1,15 +1,13 @@
+version: '3.3'
 services:
-  db:
-    container_name: ${CONTAINER_NAME}-db
-    image: mysql:8.0
+  autoconfigurator:
+    image: nginx:alpine
+    container_name: ${CONTAINER_NAME}-autoconfig
     ports:
-      - 3306:3306
+      - "80:80"
     volumes:
-      - ./mysql-data:/var/lib/mysql
-      - ./initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
+      - ./nginx-autoconfig.conf.template:/etc/nginx/templates/default.conf.template
     environment:
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_ROOT_HOST: ${MYSQL_ROOT_HOST}
+      - MAILDOMAIN=${MAILDOMAIN}
+      - MAILHOST=${MAILHOST}
+    restart: always    
