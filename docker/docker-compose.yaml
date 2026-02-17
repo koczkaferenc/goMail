@@ -41,7 +41,7 @@ services:
   # Webmail konténer (alap Nginx)
   wm:
     image: nginx:alpine
-    container_name: ${WEBMAIL_HOST}
+    container_name: ${CONTAINER_NAME}-webmail
     restart: always
     volumes:
     - ./webroot-wm:/usr/share/nginx/html:ro
@@ -49,7 +49,7 @@ services:
   # Webadmin konténer (alap Nginx)
   ma:
     image: nginx:alpine
-    container_name: ${MAILADMIN_HOST}
+    container_name: ${CONTAINER_NAME}-webadmin
     restart: always
     volumes:
     - ./webroot-ma:/usr/share/nginx/html:ro

@@ -14,7 +14,7 @@ echo ""
 # -----------------------------------------------------
 # DNS rekordok ellenőrzése
 # -----------------------------------------------------
-echo "DNS rekordok ellenőrzése:"
+echo "DNS rekordok ellenőrzése: "
 for T in $MAILSERVER_FQDN $WEBMAIL_FQDN $MAILADMIN_FQDN ${MAILDOMAIN} ; do
     echo -n "  [?] $T: "
     RESOLVED_IP=$(dig @8.8.8.8 +short "$T")
@@ -28,6 +28,29 @@ for T in $MAILSERVER_FQDN $WEBMAIL_FQDN $MAILADMIN_FQDN ${MAILDOMAIN} ; do
         echo "✅ ${RESOLVED_IP}"
     fi          
 done
+
+# -----------------------------------------------------
+# srv rekordok ellenőrzése
+# -----------------------------------------------------
+for S in _imaps:993 _submission:587 _autodiscover:443 ; do
+  SRV=$(echo $S | cut -d: -f1)
+  PORT=$(echo $S | cut -d: -f2)
+  echo -n "  [?] ${SRV}._tcp.$MAILDOMAIN: "
+  T="${SRV}._tcp.$MAILDOMAIN"
+  SRV_REC=$(dig @8.8.8.8 +short SRV "$T")
+  if [ -z "$SRV_REC" ]; then
+    echo " hiányzik."
+    echo "      [-] Beállítás: ${SRV}._tcp SRV 10 10 ${PORT} ${MAIL_HOST}.${MAILDOMAIN}"
+    exit 9
+  elif [[ ! "$SRV_REC" =~ "$MAIL_HOST" ]]; then
+    echo " hibás címre mutat."
+    echo "      [-] Beállítás: ${SRV}._tcp SRV 10 10 ${PORT} ${MAIL_HOST}.${MAILDOMAIN}"
+    exit 9
+  else
+    echo "✅"
+  fi
+done
+
 
 # -----------------------------------------------------
 # autodiscover és autoconfig CNAME ellenőrzése

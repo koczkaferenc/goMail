@@ -22,7 +22,7 @@ server {
                     <domain>${MAILDOMAIN}</domain>
                     <displayName>Koczka Mail Service</displayName>
                     <displayShortName>Koczka</displayShortName>
-                    
+
                     <incomingServer type="imap">
                         <hostname>${MAIL_HOST}.${MAILDOMAIN}</hostname>
                         <port>993</port>
@@ -41,6 +41,39 @@ server {
                 </emailProvider>
             </clientConfig>';
     }
+
+    location ~* /Autodiscover/Autodiscover.xml {
+        default_type application/xml;
+        return 200 '<?xml version="1.0" encoding="utf-8"?>
+            <Autodiscover xmlns="http://schemas.microsoft.com/exchange/autodiscover/responseschema/2006">
+            <Response xmlns="http://schemas.microsoft.com/exchange/autodiscover/outlook/responseschema/2006a">
+                <Account>
+                <AccountType>email</AccountType>
+                <Action>settings</Action>
+                <Protocol>
+                    <Type>IMAP</Type>
+                    <Server>${MAIL_HOST}.${MAILDOMAIN}</Server>
+                    <Port>993</Port>
+                    <SSL>on</SSL>
+                    <Encryption>SSL</Encryption>
+                    <AuthRequired>on</AuthRequired>
+                    <SPA>off</SPA>
+                    <LoginName>%EmailAddress%</LoginName>
+                </Protocol>
+                <Protocol>
+                    <Type>SMTP</Type>
+                    <Server>${MAIL_HOST}.${MAILDOMAIN}</Server>
+                    <Port>465</Port>
+                    <SSL>on</SSL>
+                    <Encryption>SSL</Encryption>
+                    <AuthRequired>on</AuthRequired>
+                    <SPA>off</SPA>
+                    <LoginName>%EmailAddress%</LoginName>
+                </Protocol>
+                </Account>
+            </Response>
+            </Autodiscover>';
+    }
 }
 
 server {
@@ -58,7 +91,7 @@ server {
                     <domain>${MAILDOMAIN}</domain>
                     <displayName>Koczka Mail Service</displayName>
                     <displayShortName>Koczka</displayShortName>
-                    
+
                     <incomingServer type="imap">
                         <hostname>${MAIL_HOST}.${MAILDOMAIN}</hostname>
                         <port>993</port>
@@ -83,6 +116,11 @@ server {
     listen 443 ssl;
     server_name autodiscover.${MAILDOMAIN};
 
+    # Kényszerítjük az Outlookot, hogy az SRV rekordot vagy az XML-t nézze.
+    if ($arg_Protocol = "ActiveSync") {
+        return 404;
+    }
+
     ssl_certificate     /etc/letsencrypt/live/${AUTODISCOVER_HOST}.${MAILDOMAIN}/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/${AUTODISCOVER_HOST}.${MAILDOMAIN}/privkey.pem;
 
@@ -94,7 +132,7 @@ server {
                     <domain>${MAILDOMAIN}</domain>
                     <displayName>Koczka Mail Service</displayName>
                     <displayShortName>Koczka</displayShortName>
-                    
+
                     <incomingServer type="imap">
                         <hostname>${MAIL_HOST}.${MAILDOMAIN}</hostname>
                         <port>993</port>
@@ -113,7 +151,7 @@ server {
                 </emailProvider>
             </clientConfig>';
     }
-    
+
     location ~* /Autodiscover/Autodiscover.xml {
         default_type application/xml;
         return 200 '<?xml version="1.0" encoding="utf-8"?>
@@ -137,7 +175,29 @@ server {
             </Account>
           </Response>
         </Autodiscover>';
-    }    
+    }
+
+    location ~* ^/autodiscover/autodiscover.json {
+        # Ha ActiveSync-et keres, adjunk 404-et.
+        # Ezzel kényszerítjük az Outlookot, hogy az SRV rekordot vagy az XML-t nézze.
+        if ($arg_Protocol = "ActiveSync") {
+            return 404;
+        }
+
+        # Minden más esetben (pl. ha valami tényleg JSON-t akar)
+        default_type application/json;
+        return 200 '{
+            "Protocol": "IMAP",
+            "Url": "${MAIL_HOST}.${MAILDOMAIN}",
+            "Port": "993",
+            "SSL": "On",
+            "SMTP": {
+                "Url": "${MAIL_HOST}.${MAILDOMAIN}",
+                "Port": "465",
+                "SSL": "On"
+            }
+        }';
+    }
 }
 
 
