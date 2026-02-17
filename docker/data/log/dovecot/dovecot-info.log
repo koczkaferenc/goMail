@@ -137,3 +137,87 @@ Feb 17 18:45:49 master: Info: Dovecot v2.3.19.1 (9b53102964) starting up for ima
 Feb 17 18:47:45 master: Info: Dovecot v2.3.19.1 (9b53102964) starting up for imap, pop3, lmtp
 Feb 17 18:48:42 master: Info: Dovecot v2.3.19.1 (9b53102964) starting up for imap, pop3, lmtp
 Feb 17 18:51:22 master: Info: Dovecot v2.3.19.1 (9b53102964) starting up for imap, pop3, lmtp
+Feb 17 18:53:13 master: Info: Dovecot v2.3.19.1 (9b53102964) starting up for imap, pop3, lmtp
+Feb 17 18:54:13 imap-login: Info: Login: user=<info@koczka.eu>, method=PLAIN, rip=178.164.142.193, lip=192.168.80.3, mpid=22, TLS, session=<BSn+mAlLZMmypI7B>
+Feb 17 18:54:13 imap(info@koczka.eu)<22><BSn+mAlLZMmypI7B>: Info: Disconnected: Logged out in=9 out=470 deleted=0 expunged=0 trashed=0 hdr_count=0 hdr_bytes=0 body_count=0 body_bytes=0
+Feb 17 18:54:14 imap-login: Info: Login: user=<info@koczka.eu>, method=PLAIN, rip=178.164.142.193, lip=192.168.80.3, mpid=25, TLS, session=<K1QCmQlLZcmypI7B>
+Feb 17 18:54:14 imap-login: Info: Login: user=<info@koczka.eu>, method=PLAIN, rip=178.164.142.193, lip=192.168.80.3, mpid=26, TLS, session=<n00FmQlLZsmypI7B>
+Feb 17 18:56:37 imap(info@koczka.eu)<25><K1QCmQlLZcmypI7B>: Info: Disconnected: Logged out in=201 out=972 deleted=0 expunged=0 trashed=0 hdr_count=0 hdr_bytes=0 body_count=0 body_bytes=0
+Feb 17 18:56:37 imap(info@koczka.eu)<26><n00FmQlLZsmypI7B>: Info: Disconnected: Logged out in=121 out=1069 deleted=0 expunged=0 trashed=0 hdr_count=0 hdr_bytes=0 body_count=0 body_bytes=0
+Feb 17 18:57:25 imap-login: Info: Login: user=<info@koczka.eu>, method=PLAIN, rip=178.164.142.193, lip=192.168.80.3, mpid=30, TLS, session=<NcFppAlLosmypI7B>
+Feb 17 18:57:25 imap(info@koczka.eu)<30><NcFppAlLosmypI7B>: Info: Disconnected: Connection closed (No commands sent) in=0 out=405 deleted=0 expunged=0 trashed=0 hdr_count=0 hdr_bytes=0 body_count=0 body_bytes=0
+Feb 17 18:57:25 imap-login: Info: Login: user=<info@koczka.eu>, method=PLAIN, rip=178.164.142.193, lip=192.168.80.3, mpid=33, TLS, session=<3J9tpAlLo8mypI7B>
+Feb 17 18:57:25 imap-login: Info: Login: user=<info@koczka.eu>, method=PLAIN, rip=178.164.142.193, lip=192.168.80.3, mpid=34, TLS, session=<brVwpAlLpMmypI7B>
+Feb 17 19:04:04 imap(info@koczka.eu)<33><3J9tpAlLo8mypI7B>: Info: Disconnected: Logged out in=122 out=773 deleted=0 expunged=0 trashed=0 hdr_count=0 hdr_bytes=0 body_count=0 body_bytes=0
+Feb 17 19:04:04 imap(info@koczka.eu)<34><brVwpAlLpMmypI7B>: Info: Disconnected: Logged out in=199 out=1457 deleted=0 expunged=0 trashed=0 hdr_count=0 hdr_bytes=0 body_count=0 body_bytes=0
+Feb 17 19:05:54 imap-login: Info: Login: user=<info@koczka.eu>, method=PLAIN, rip=178.164.142.193, lip=192.168.80.3, mpid=38, TLS, session=<0gnHwglLPcqypI7B>
+Feb 17 19:05:54 imap(info@koczka.eu)<38><0gnHwglLPcqypI7B>: Info: Disconnected: Logged out in=9 out=470 deleted=0 expunged=0 trashed=0 hdr_count=0 hdr_bytes=0 body_count=0 body_bytes=0
+Feb 17 19:05:55 imap-login: Info: Login: user=<info@koczka.eu>, method=PLAIN, rip=178.164.142.193, lip=192.168.80.3, mpid=41, TLS, session=<YmvKwglLP8qypI7B>
+Feb 17 19:05:55 imap-login: Info: Login: user=<info@koczka.eu>, method=PLAIN, rip=178.164.142.193, lip=192.168.80.3, mpid=42, TLS, session=<MEfNwglLPsqypI7B>
+Feb 17 19:10:05 imap(info@koczka.eu)<41><YmvKwglLP8qypI7B>: Info: Disconnected: Logged out in=193 out=1410 deleted=0 expunged=0 trashed=0 hdr_count=0 hdr_bytes=0 body_count=0 body_bytes=0
+Feb 17 19:10:05 imap(info@koczka.eu)<42><MEfNwglLPsqypI7B>: Info: Disconnected: Logged out in=108 out=691 deleted=0 expunged=0 trashed=0 hdr_count=0 hdr_bytes=0 body_count=0 body_bytes=0
+Feb 17 19:10:58 imap-login: Info: Disconnected: Connection closed (auth failed, 3 attempts in 14 secs): user=<info@koczka.eu>, method=PLAIN, rip=178.164.142.193, lip=192.168.80.3, TLS, session=<iCYI1AlLk8qypI7B>
+Feb 17 19:11:19 imap-login: Info: Disconnected: Connection closed (auth failed, 3 attempts in 14 secs): user=<info@koczka.eu>, method=PLAIN, rip=178.164.142.193, lip=192.168.80.3, TLS, session=<XcRG1QlLn8qypI7B>
+Feb 17 19:11:24 imap-login: Info: Login: user=<info@koczka.eu>, method=PLAIN, rip=178.164.142.193, lip=192.168.80.3, mpid=48, TLS, session=<fy9s1glLpMqypI7B>
+Feb 17 19:11:24 imap(info@koczka.eu)<48><fy9s1glLpMqypI7B>: Info: Disconnected: Logged out in=9 out=470 deleted=0 expunged=0 trashed=0 hdr_count=0 hdr_bytes=0 body_count=0 body_bytes=0
+Feb 17 19:11:24 imap-login: Info: Login: user=<info@koczka.eu>, method=PLAIN, rip=178.164.142.193, lip=192.168.80.3, mpid=51, TLS, session=<Qbhv1glLpcqypI7B>
+Feb 17 19:11:24 imap-login: Info: Login: user=<info@koczka.eu>, method=PLAIN, rip=178.164.142.193, lip=192.168.80.3, mpid=52, TLS, session=<ijBz1glLpsqypI7B>
+Feb 17 19:15:06 imap(info@koczka.eu)<51><Qbhv1glLpcqypI7B>: Info: Disconnected: Logged out in=122 out=773 deleted=0 expunged=0 trashed=0 hdr_count=0 hdr_bytes=0 body_count=0 body_bytes=0
+Feb 17 19:15:06 imap(info@koczka.eu)<52><ijBz1glLpsqypI7B>: Info: Disconnected: Logged out in=151 out=1092 deleted=0 expunged=0 trashed=0 hdr_count=0 hdr_bytes=0 body_count=0 body_bytes=0
+Feb 17 19:15:22 imap-login: Info: Login: user=<info@koczka.eu>, method=PLAIN, rip=178.164.142.193, lip=192.168.80.3, mpid=56, TLS, session=<Jvuh5AlL8sqypI7B>
+Feb 17 19:15:23 imap(info@koczka.eu)<56><Jvuh5AlL8sqypI7B>: Info: Disconnected: Logged out in=9 out=470 deleted=0 expunged=0 trashed=0 hdr_count=0 hdr_bytes=0 body_count=0 body_bytes=0
+Feb 17 19:15:23 imap-login: Info: Login: user=<info@koczka.eu>, method=PLAIN, rip=178.164.142.193, lip=192.168.80.3, mpid=59, TLS, session=<QI6n5AlL88qypI7B>
+Feb 17 19:15:23 imap-login: Info: Login: user=<info@koczka.eu>, method=PLAIN, rip=178.164.142.193, lip=192.168.80.3, mpid=60, TLS, session=<HEep5AlL9MqypI7B>
+Feb 17 19:15:49 imap(info@koczka.eu)<60><HEep5AlL9MqypI7B>: Info: Disconnected: Logged out in=113 out=992 deleted=0 expunged=0 trashed=0 hdr_count=0 hdr_bytes=0 body_count=0 body_bytes=0
+Feb 17 19:15:49 imap(info@koczka.eu)<59><QI6n5AlL88qypI7B>: Info: Disconnected: Logged out in=122 out=773 deleted=0 expunged=0 trashed=0 hdr_count=0 hdr_bytes=0 body_count=0 body_bytes=0
+Feb 17 19:15:57 imap-login: Info: Login: user=<info@koczka.eu>, method=PLAIN, rip=178.164.142.193, lip=192.168.80.3, mpid=63, TLS, session=<1M6x5glLAcuypI7B>
+Feb 17 19:15:57 imap-login: Info: Login: user=<info@koczka.eu>, method=PLAIN, rip=178.164.142.193, lip=192.168.80.3, mpid=64, TLS, session=<15C05glLAsuypI7B>
+Feb 17 19:16:02 imap(info@koczka.eu)<63><1M6x5glLAcuypI7B>: Info: Disconnected: Logged out in=122 out=773 deleted=0 expunged=0 trashed=0 hdr_count=0 hdr_bytes=0 body_count=0 body_bytes=0
+Feb 17 19:16:02 imap(info@koczka.eu)<64><15C05glLAsuypI7B>: Info: Disconnected: Logged out in=103 out=944 deleted=0 expunged=0 trashed=0 hdr_count=0 hdr_bytes=0 body_count=0 body_bytes=0
+Feb 17 19:16:17 imap-login: Info: Login: user=<info@koczka.eu>, method=PLAIN, rip=178.164.142.193, lip=192.168.80.3, mpid=66, TLS, session=<kZ/h5wlLFsuypI7B>
+Feb 17 19:16:17 imap(info@koczka.eu)<66><kZ/h5wlLFsuypI7B>: Info: Disconnected: Logged out in=9 out=470 deleted=0 expunged=0 trashed=0 hdr_count=0 hdr_bytes=0 body_count=0 body_bytes=0
+Feb 17 19:16:17 imap-login: Info: Login: user=<info@koczka.eu>, method=PLAIN, rip=178.164.142.193, lip=192.168.80.3, mpid=69, TLS, session=<rTbl5wlLF8uypI7B>
+Feb 17 19:16:17 imap-login: Info: Login: user=<info@koczka.eu>, method=PLAIN, rip=178.164.142.193, lip=192.168.80.3, mpid=70, TLS, session=<4uDo5wlLGMuypI7B>
+Feb 17 19:16:38 imap(info@koczka.eu)<69><rTbl5wlLF8uypI7B>: Info: Disconnected: Server shutting down. in=113 out=737 deleted=0 expunged=0 trashed=0 hdr_count=0 hdr_bytes=0 body_count=0 body_bytes=0
+Feb 17 19:16:38 imap(info@koczka.eu)<70><4uDo5wlLGMuypI7B>: Info: Disconnected: Server shutting down. in=78 out=811 deleted=0 expunged=0 trashed=0 hdr_count=0 hdr_bytes=0 body_count=0 body_bytes=0
+Feb 17 19:19:22 master: Info: Dovecot v2.3.19.1 (9b53102964) starting up for imap, pop3, lmtp
+Feb 17 19:19:30 imap-login: Info: Disconnected: Connection closed: SSL_accept() failed: error:0A000412:SSL routines::sslv3 alert bad certificate: SSL alert number 42 (no auth attempts in 0 secs): user=<>, rip=178.164.142.193, lip=192.168.96.2, TLS handshaking: SSL_accept() failed: error:0A000412:SSL routines::sslv3 alert bad certificate: SSL alert number 42, session=<cgVk8wlLi8uypI7B>
+Feb 17 19:19:30 imap-login: Info: Disconnected: Aborted login by logging out (no auth attempts in 0 secs): user=<>, rip=178.164.142.193, lip=192.168.96.2, session=<qIxo8wlLjcuypI7B>
+Feb 17 19:19:31 pop3-login: Info: Disconnected: Connection closed: SSL_accept() failed: error:0A000412:SSL routines::sslv3 alert bad certificate: SSL alert number 42 (no auth attempts in 0 secs): user=<>, rip=178.164.142.193, lip=192.168.96.2, TLS handshaking: SSL_accept() failed: error:0A000412:SSL routines::sslv3 alert bad certificate: SSL alert number 42, session=<xSZv8wlLkMuypI7B>
+Feb 17 19:19:31 pop3-login: Info: Disconnected: Aborted login by logging out (no auth attempts in 0 secs): user=<>, rip=178.164.142.193, lip=192.168.96.2, session=<PDx18wlLkcuypI7B>
+Feb 17 19:19:45 imap-login: Info: Disconnected: Connection closed: SSL_accept() failed: error:0A000412:SSL routines::sslv3 alert bad certificate: SSL alert number 42 (no auth attempts in 0 secs): user=<>, rip=178.164.142.193, lip=192.168.96.2, TLS handshaking: SSL_accept() failed: error:0A000412:SSL routines::sslv3 alert bad certificate: SSL alert number 42, session=<wMZI9AlLnsuypI7B>
+Feb 17 19:19:45 imap-login: Info: Disconnected: Aborted login by logging out (no auth attempts in 0 secs): user=<>, rip=178.164.142.193, lip=192.168.96.2, session=<amFN9AlLoMuypI7B>
+Feb 17 19:19:46 pop3-login: Info: Disconnected: Connection closed: SSL_accept() failed: error:0A000412:SSL routines::sslv3 alert bad certificate: SSL alert number 42 (no auth attempts in 0 secs): user=<>, rip=178.164.142.193, lip=192.168.96.2, TLS handshaking: SSL_accept() failed: error:0A000412:SSL routines::sslv3 alert bad certificate: SSL alert number 42, session=<j+BT9AlLo8uypI7B>
+Feb 17 19:19:46 pop3-login: Info: Disconnected: Aborted login by logging out (no auth attempts in 0 secs): user=<>, rip=178.164.142.193, lip=192.168.96.2, session=<8AJa9AlLpMuypI7B>
+Feb 17 19:21:14 imap-login: Info: Disconnected: Connection closed: SSL_accept() failed: error:0A000412:SSL routines::sslv3 alert bad certificate: SSL alert number 42 (no auth attempts in 0 secs): user=<>, rip=178.164.142.193, lip=192.168.96.2, TLS handshaking: SSL_accept() failed: error:0A000412:SSL routines::sslv3 alert bad certificate: SSL alert number 42, session=<nHiZ+QlLzcuypI7B>
+Feb 17 19:21:14 imap-login: Info: Disconnected: Aborted login by logging out (no auth attempts in 0 secs): user=<>, rip=178.164.142.193, lip=192.168.96.2, session=<O5Cd+QlL0MuypI7B>
+Feb 17 19:21:15 pop3-login: Info: Disconnected: Connection closed: SSL_accept() failed: error:0A000412:SSL routines::sslv3 alert bad certificate: SSL alert number 42 (no auth attempts in 0 secs): user=<>, rip=178.164.142.193, lip=192.168.96.2, TLS handshaking: SSL_accept() failed: error:0A000412:SSL routines::sslv3 alert bad certificate: SSL alert number 42, session=<KBCk+QlL08uypI7B>
+Feb 17 19:21:15 pop3-login: Info: Disconnected: Aborted login by logging out (no auth attempts in 0 secs): user=<>, rip=178.164.142.193, lip=192.168.96.2, session=<2fep+QlL1MuypI7B>
+Feb 17 19:22:52 master: Info: Dovecot v2.3.19.1 (9b53102964) starting up for imap, pop3, lmtp
+Feb 17 19:22:56 imap-login: Info: Disconnected: Connection closed: SSL_accept() failed: error:0A000412:SSL routines::sslv3 alert bad certificate: SSL alert number 42 (no auth attempts in 0 secs): user=<>, rip=178.164.142.193, lip=192.168.112.2, TLS handshaking: SSL_accept() failed: error:0A000412:SSL routines::sslv3 alert bad certificate: SSL alert number 42, session=<GnKq/wlL+suypI7B>
+Feb 17 19:22:56 imap-login: Info: Disconnected: Aborted login by logging out (no auth attempts in 0 secs): user=<>, rip=178.164.142.193, lip=192.168.112.2, session=<Xw2v/wlL/cuypI7B>
+Feb 17 19:22:57 pop3-login: Info: Disconnected: Connection closed: SSL_accept() failed: error:0A000412:SSL routines::sslv3 alert bad certificate: SSL alert number 42 (no auth attempts in 0 secs): user=<>, rip=178.164.142.193, lip=192.168.112.2, TLS handshaking: SSL_accept() failed: error:0A000412:SSL routines::sslv3 alert bad certificate: SSL alert number 42, session=<kWy1/wlLAMyypI7B>
+Feb 17 19:22:57 pop3-login: Info: Disconnected: Aborted login by logging out (no auth attempts in 0 secs): user=<>, rip=178.164.142.193, lip=192.168.112.2, session=<uqO7/wlLAsyypI7B>
+Feb 17 19:23:02 imap-login: Info: Disconnected: Connection closed: SSL_accept() failed: error:0A000412:SSL routines::sslv3 alert bad certificate: SSL alert number 42 (no auth attempts in 0 secs): user=<>, rip=178.164.142.193, lip=192.168.112.2, TLS handshaking: SSL_accept() failed: error:0A000412:SSL routines::sslv3 alert bad certificate: SSL alert number 42, session=<rF8HAApLDMyypI7B>
+Feb 17 19:23:02 imap-login: Info: Disconnected: Aborted login by logging out (no auth attempts in 0 secs): user=<>, rip=178.164.142.193, lip=192.168.112.2, session=<f/4LAApLDsyypI7B>
+Feb 17 19:23:03 pop3-login: Info: Disconnected: Connection closed: SSL_accept() failed: error:0A000412:SSL routines::sslv3 alert bad certificate: SSL alert number 42 (no auth attempts in 0 secs): user=<>, rip=178.164.142.193, lip=192.168.112.2, TLS handshaking: SSL_accept() failed: error:0A000412:SSL routines::sslv3 alert bad certificate: SSL alert number 42, session=<z3ESAApLEcyypI7B>
+Feb 17 19:23:03 pop3-login: Info: Disconnected: Aborted login by logging out (no auth attempts in 0 secs): user=<>, rip=178.164.142.193, lip=192.168.112.2, session=<6J4YAApLEsyypI7B>
+Feb 17 19:23:29 imap-login: Info: Disconnected: Connection closed: SSL_accept() failed: error:0A000412:SSL routines::sslv3 alert bad certificate: SSL alert number 42 (no auth attempts in 0 secs): user=<>, rip=178.164.142.193, lip=192.168.112.2, TLS handshaking: SSL_accept() failed: error:0A000412:SSL routines::sslv3 alert bad certificate: SSL alert number 42, session=<MWKgAQpLIsyypI7B>
+Feb 17 19:23:29 imap-login: Info: Disconnected: Aborted login by logging out (no auth attempts in 0 secs): user=<>, rip=178.164.142.193, lip=192.168.112.2, session=<x/6kAQpLJMyypI7B>
+Feb 17 19:23:30 pop3-login: Info: Disconnected: Connection closed: SSL_accept() failed: error:0A000412:SSL routines::sslv3 alert bad certificate: SSL alert number 42 (no auth attempts in 1 secs): user=<>, rip=178.164.142.193, lip=192.168.112.2, TLS handshaking: SSL_accept() failed: error:0A000412:SSL routines::sslv3 alert bad certificate: SSL alert number 42, session=<7larAQpLJ8yypI7B>
+Feb 17 19:23:30 pop3-login: Info: Disconnected: Aborted login by logging out (no auth attempts in 0 secs): user=<>, rip=178.164.142.193, lip=192.168.112.2, session=<6oSxAQpLKcyypI7B>
+Feb 17 19:27:25 master: Info: Dovecot v2.3.19.1 (9b53102964) starting up for imap, pop3, lmtp
+Feb 17 19:27:37 imap-login: Info: Login: user=<info@koczka.eu>, method=PLAIN, rip=178.164.142.193, lip=192.168.128.4, mpid=21, TLS, session=<4P1oEApLesyypI7B>
+Feb 17 19:27:37 imap(info@koczka.eu)<21><4P1oEApLesyypI7B>: Info: Disconnected: Logged out in=9 out=470 deleted=0 expunged=0 trashed=0 hdr_count=0 hdr_bytes=0 body_count=0 body_bytes=0
+Feb 17 19:27:37 imap-login: Info: Login: user=<info@koczka.eu>, method=PLAIN, rip=178.164.142.193, lip=192.168.128.4, mpid=24, TLS, session=<RPhsEApLe8yypI7B>
+Feb 17 19:27:37 imap-login: Info: Login: user=<info@koczka.eu>, method=PLAIN, rip=178.164.142.193, lip=192.168.128.4, mpid=25, TLS, session=<JipwEApLfMyypI7B>
+Feb 17 19:32:18 imap(info@koczka.eu)<24><RPhsEApLe8yypI7B>: Info: Disconnected: Server shutting down. in=113 out=745 deleted=0 expunged=0 trashed=0 hdr_count=0 hdr_bytes=0 body_count=0 body_bytes=0
+Feb 17 19:32:18 imap(info@koczka.eu)<25><JipwEApLfMyypI7B>: Info: Disconnected: Server shutting down. in=150 out=1195 deleted=0 expunged=0 trashed=0 hdr_count=0 hdr_bytes=0 body_count=0 body_bytes=0
+Feb 17 19:32:24 master: Info: Dovecot v2.3.19.1 (9b53102964) starting up for imap, pop3, lmtp
+Feb 17 19:34:53 master: Info: Dovecot v2.3.19.1 (9b53102964) starting up for imap, pop3, lmtp
+Feb 17 19:35:18 imap-login: Info: Login: user=<info@koczka.eu>, method=PLAIN, rip=178.164.142.193, lip=192.168.160.4, mpid=21, TLS, session=<RQjlKwpL+8yypI7B>
+Feb 17 19:35:18 imap(info@koczka.eu)<21><RQjlKwpL+8yypI7B>: Info: Disconnected: Connection closed (No commands sent) in=0 out=405 deleted=0 expunged=0 trashed=0 hdr_count=0 hdr_bytes=0 body_count=0 body_bytes=0
+Feb 17 19:35:18 imap-login: Info: Login: user=<info@koczka.eu>, method=PLAIN, rip=178.164.142.193, lip=192.168.160.4, mpid=24, TLS, session=<pQ7pKwpL/MyypI7B>
+Feb 17 19:35:18 imap-login: Info: Login: user=<info@koczka.eu>, method=PLAIN, rip=178.164.142.193, lip=192.168.160.4, mpid=25, TLS, session=<hOXqKwpL/cyypI7B>
+Feb 17 19:37:14 imap(info@koczka.eu)<24><pQ7pKwpL/MyypI7B>: Info: Disconnected: Logged out in=122 out=781 deleted=0 expunged=0 trashed=0 hdr_count=0 hdr_bytes=0 body_count=0 body_bytes=0
+Feb 17 19:37:14 imap(info@koczka.eu)<25><hOXqKwpL/cyypI7B>: Info: Disconnected: Logged out in=151 out=1182 deleted=0 expunged=0 trashed=0 hdr_count=0 hdr_bytes=0 body_count=0 body_bytes=0

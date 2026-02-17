@@ -15,7 +15,7 @@ echo ""
 # DNS rekordok ellenőrzése
 # -----------------------------------------------------
 echo "DNS rekordok ellenőrzése:"
-for T in $MAILSERVER_FQDN $WEBMAIL_FQDN $MAILADMIN_FQDN ; do
+for T in $MAILSERVER_FQDN $WEBMAIL_FQDN $MAILADMIN_FQDN ${MAILDOMAIN} ; do
     echo -n "  [?] $T: "
     RESOLVED_IP=$(dig @8.8.8.8 +short "$T")
     if [ -z "$RESOLVED_IP" ]; then
@@ -136,7 +136,7 @@ fi
 # Tanúsítványok ellenőrzése/előállítása
 # -----------------------------------------------------
 echo "Tanúsítványok generálása:"
-for T in $MAILSERVER_FQDN $WEBMAIL_FQDN $MAILADMIN_FQDN ${AUTODISCOVER_HOST}.${MAILDOMAIN} ${AUTOCONFIG_HOST}.${MAILDOMAIN} ; do
+for T in $MAILSERVER_FQDN $WEBMAIL_FQDN $MAILADMIN_FQDN ${AUTODISCOVER_HOST}.${MAILDOMAIN} ${AUTOCONFIG_HOST}.${MAILDOMAIN} ${MAILDOMAIN}; do
     echo -n "  [?] Tanúsítvány: $T "
     CERT_FILE="/etc/letsencrypt/live/${T}/fullchain.pem"
     if [ ! -f "$CERT_FILE" ]; then
