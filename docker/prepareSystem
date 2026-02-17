@@ -1,0 +1,9 @@
+docker image rm sysinit
+docker build -t sysinit -f sysinit/Dockerfile .
+docker run -it --rm --name sysinit \
+    -v ./data:/data \
+    -v ./data/etc/letsencrypt:/etc/letsencrypt \
+    -v ./data/var/lib/letsencrypt:/var/lib/letsencrypt \
+    -v ./.env:/.env \
+    -v ./sysinit/initdb.sql:/initdb.sql \
+    -p 80:80 sysinit
