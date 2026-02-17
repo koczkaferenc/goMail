@@ -59,7 +59,19 @@ else
     exit 2
 fi
 
+echo -n "[?] DMARC rekord ellenőrzése: "
+RECORD=$(dig +short TXT _dmarc."$MAILDOMAIN")
+if [ -n "$RECORD" ]; then
+    echo "OK: $RECORD"
+else
+    echo " hiányzik."
+    echo "    [-] Vedd fel a következő TXT rekordot a DNS-be:"
+    echo "    Kulcs: TXT _dmarc"
+    echo "    Érték: v=DMARC1; p=quarantine;"
+fi
+
 exit
+
 # Tanúsítványok létrehozása
 set -x
 docker run --rm -it \
