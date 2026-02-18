@@ -1,4 +1,11 @@
 #!/bin/bash
+. .env
+
+[ ! -d ${DATA_DIR}/var/log ] && mkdir -p ${DATA_DIR}/var/log
+[ ! -d ${DATA_DIR}/var/log/imapsync ] && mkdir -p ${DATA_DIR}/var/log/imapsync
+chown 100:100 -R ${DATA_DIR}/var/log
+chmod 775 -R ${DATA_DIR}/var/log
+
 docker-compose down
 [ -d data/run ] && rm -r data/run
 docker-compose up

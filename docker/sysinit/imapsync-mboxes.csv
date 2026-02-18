@@ -1,0 +1,15 @@
+#
+# A szinkrnozálandó mailboxok adatai
+# 1. Forrás IMAP szerver neve/címe
+# 2. E-mail cím/Login
+# 3. Forrás jelszó
+# 4. Cél gép, konténerben dovecot
+# 5. Cél gép login/e-mail cím
+# 6. Cél gép jelszó
+# 7. Ennyi napnál régebbi leveleket törli a forrásból - 0 nem töröl
+#
+
+212.92.23.213:feri@koczka.hu:bRsT64%xT1965:dovecot:feri@koczka.hu:titok:20
+212.92.23.213:sztfh-et@linux-szerver.hu:bRsT64%xT1965:dovecot:sztfh-et@linux-szerver.hu:titok:0
+# 212.92.23.213:sztfh-ph@linux-szerver.hu:bRsT64%xT1965:dovecot:sztfh-ph@linux-szerver.hu:titok:0
+

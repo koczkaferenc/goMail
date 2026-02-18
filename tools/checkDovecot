@@ -1,0 +1,37 @@
+#!/bin/bash
+
+HOST="mta.koczka.eu"
+USER="info@koczka.eu"
+PASS="titok"
+
+echo "=== POP3 (110) ==="
+(
+echo "USER $USER"
+sleep 1
+echo "PASS $PASS"
+sleep 1
+echo "QUIT"
+) | telnet $HOST 110
+
+echo "=== POP3S (995) ==="
+openssl s_client -connect $HOST:995 -crlf -quiet <<EOF
+USER $USER
+PASS $PASS
+QUIT
+EOF
+
+echo "=== IMAP (143) ==="
+(
+echo "a login $USER $PASS"
+sleep 1
+echo "a list \"\" \"*\""
+sleep 1
+echo "a logout"
+) | telnet $HOST 143
+
+echo "=== IMAPS (993) ==="
+openssl s_client -connect $HOST:993 -crlf -quiet <<EOF
+a login $USER $PASS
+a list "" "*"
+a logout
+EOF

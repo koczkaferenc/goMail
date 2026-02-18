@@ -63,3 +63,12 @@ INSERT INTO users (username, password, admin, realname) VALUES ('koczka.ferenc',
 INSERT INTO domains (domain) VALUES ('koczka.eu');
 INSERT INTO ud (userid, domainid) VALUES (1,1);
 INSERT INTO mboxes (localpart, domain, password, home) VALUES ('info','koczka.eu','{SHA256-CRYPT}$5$MlHYMq97GNNiSKnA$7qPjr60o3NAm6k5oVzLGyzGwFIXzkWMfgbpNqgs1Cu8', '/var/mail/koczka.eu/info/Maildir');
+
+INSERT INTO domains (domain) VALUES ('koczka.hu');
+INSERT INTO ud (userid, domainid) VALUES (1,2);
+INSERT INTO mboxes (localpart, domain, password, home) VALUES ('feri','koczka.hu','{SHA256-CRYPT}$5$MlHYMq97GNNiSKnA$7qPjr60o3NAm6k5oVzLGyzGwFIXzkWMfgbpNqgs1Cu8', '/var/mail/koczka.hu/feri/Maildir');
+
+INSERT INTO domains (domain) VALUES ('linux-szerver.hu');
+INSERT INTO ud (userid, domainid) VALUES (1,3);
+INSERT INTO mboxes (localpart, domain, password, home) VALUES ('sztfh-et','linux-szerver.hu','{SHA256-CRYPT}$5$MlHYMq97GNNiSKnA$7qPjr60o3NAm6k5oVzLGyzGwFIXzkWMfgbpNqgs1Cu8', '/var/mail/linux-szerver.hu/sztfh-et/Maildir');
+INSERT INTO mboxes (localpart, domain, password, home) VALUES ('sztfh-ph','linux-szerver.hu','{SHA256-CRYPT}$5$MlHYMq97GNNiSKnA$7qPjr60o3NAm6k5oVzLGyzGwFIXzkWMfgbpNqgs1Cu8', '/var/mail/linux-szerver.hu/sztfh-ph/Maildir');

@@ -109,8 +109,9 @@ echo "✅ (${CURRENT_IP})"
 # DKIM ellenőrzése/előállítása
 # -----------------------------------------------------
 echo -n "  [?] DKIM rekord ellenőrzése: "
-PRIV_KEY="${DATA_DIR}/dkim_private.txt"
-PUB_KEY_FILE="${DATA_DIR}/dkim_public.txt"
+[ ! -d ${DATA_DIR}/etc/exim4 ] && mkdir -p ${DATA_DIR}/etc/exim4
+PRIV_KEY="${DATA_DIR}/etc/exim4/dkim_private.txt"
+PUB_KEY_FILE="${DATA_DIR}/etc/exim4/dkim_public.txt"
 
 # Már léteznek a megfelelő kulcsok?
 if [ ! -f "$PRIV_KEY" ]; then
@@ -183,8 +184,6 @@ done
 # -----------------------------------------------------
 # Adatbázis lérehozása
 # -----------------------------------------------------
-
-
 echo "Adatbázis létrehozása:"
 echo -n "  [?] Adatbázis: ${DATABASE_FILE} "
 if [ ! -f "${DATABASE_FILE}" ]; then
@@ -199,3 +198,21 @@ if [ ! -f "${DATABASE_FILE}" ]; then
 else
     echo "✅ (már létezik.)"
 fi
+
+# -----------------------------------------------------
+# Mail könyvtárak létrehozása
+# -----------------------------------------------------
+DOMAINS=$(sqlite3 "${DATABASE_FILE}" "SELECT domain FROM domains;")
+for DOMAIN in $DOMAINS; do
+    TARGET_DIR="${DATA_DIR}/var/mail/${DOMAIN}"
+    if [ ! -d "$TARGET_DIR" ]; then
+        mkdir -p "$TARGET_DIR"
+        chown 90:90 "$TARGET_DIR"
+    fi
+done
+
+# -----------------------------------------------------
+# Az imapsync adatfile bemásolása
+# -----------------------------------------------------
+[ ! -d ${DATA_DIR}/etc/imapsync ] && mkdir -p ${DATA_DIR}/etc/imapsync
+cp /imapsync-mboxes.csv ${DATA_DIR}/etc/imapsync

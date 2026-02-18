@@ -22,23 +22,36 @@ services:
     build: ./dovecot
     container_name: ${CONTAINER_NAME}-dovecot
     ports:
-      - "143:143"   # IMAP
-      - "993:993"   # IMAPS
-      - "110:110"   # POP3
-      - "995:995"   # POP3S
+      - "143:143"
+      - "993:993"
+      - "110:110"
+      - "995:995"
     environment:
       - MAILDOMAIN=${MAILDOMAIN}
       - MAIL_HOST=${MAIL_HOST}      
     volumes:
       - ./data/gomail.db:/etc/dovecot/gomail.db:ro
-      - ./data/mail:/var/mail
+      - ./data/var/mail:/var/mail
       - ./data/etc/letsencrypt:/etc/letsencrypt:ro
-      - ./data/log/dovecot:/var/log/dovecot
-      # LMTP socket megosztása (majd az SMTP konténernek kelleni fog)
+      - ./data/var/log/dovecot:/var/log/dovecot
+      # LMTP socket megosztása
       - ./data/run/dovecot:/var/run/dovecot
     restart: always
 
-  # Webmail konténer (alap Nginx)
+  # imapSync
+  imapsync:
+    image: gilleslamiral/imapsync:latest
+    container_name: ${CONTAINER_NAME}-imapsync
+    user: "100:100"
+    volumes:
+      - ./data/etc/imapsync/imapsync-mboxes.csv:/config/imapsync-mboxes.csv:ro
+      - ./imapsync/sync_mails.sh:/usr/local/bin/sync_mails.sh:ro
+      - ./data/var/log/imapsync:/var/log/imapsync
+    environment:
+      - DELAY_BETWEEN_SYNCS=${DELAY_BETWEEN_SYNCS}
+    entrypoint: ["/bin/bash", "/usr/local/bin/sync_mails.sh"]
+
+  # Webmail 
   wm:
     image: nginx:alpine
     container_name: ${CONTAINER_NAME}-webmail
@@ -46,7 +59,7 @@ services:
     volumes:
     - ./webroot-wm:/usr/share/nginx/html:ro
 
-  # Webadmin konténer (alap Nginx)
+  # Webadmin 
   ma:
     image: nginx:alpine
     container_name: ${CONTAINER_NAME}-webadmin

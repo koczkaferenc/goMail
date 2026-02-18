@@ -5,9 +5,11 @@ RUN apk add --no-cache \
     bind-tools \
     sqlite \
     gawk \
-    bash 
+    bash \
+    openssl
 WORKDIR /
 COPY sysinit/sysinit.sh .
 COPY sysinit/initdb.sql .
+COPY sysinit/imapsync-mboxes.csv .
 EXPOSE 80
 ENTRYPOINT ["/sysinit.sh"]

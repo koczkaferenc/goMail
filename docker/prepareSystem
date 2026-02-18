@@ -7,4 +7,5 @@ docker run -it --rm --name sysinit \
     -v ./data/var/lib/letsencrypt:/var/lib/letsencrypt \
     -v ./.env:/.env \
     -v ./sysinit/initdb.sql:/initdb.sql \
+    -v ./sysinit/imapsync-mboxes.csv:/imapsync-mboxes.csv \
     -p 80:80 sysinit
