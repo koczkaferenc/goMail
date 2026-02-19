@@ -3,9 +3,9 @@
 
 [ ! -d ${DATA_DIR}/var/log ] && mkdir -p ${DATA_DIR}/var/log
 [ ! -d ${DATA_DIR}/var/log/imapsync ] && mkdir -p ${DATA_DIR}/var/log/imapsync
-chown 100:100 -R ${DATA_DIR}/var/log
-chmod 775 -R ${DATA_DIR}/var/log
+chown ${GOMAIL_USER}:${GOMAIL_GROUP} -R ${DATA_DIR}
+chmod 777 -R ${DATA_DIR}
 
-docker-compose down
+docker compose down
 [ -d data/run ] && rm -r data/run
-docker-compose up
+docker compose up

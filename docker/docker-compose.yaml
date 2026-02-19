@@ -1,4 +1,4 @@
-version: '3.3'
+#version: '3.3'
 services:
   autoconfigurator:
     image: nginx:alpine
@@ -7,6 +7,7 @@ services:
       - "80:80"
       - "443:443"
     volumes:
+      - /tmp:/tmp
       - ./autoconfigurator/nginx.conf.template:/etc/nginx/templates/default.conf.template
       - ./data/etc/letsencrypt:/etc/letsencrypt:ro
     environment:
@@ -21,6 +22,7 @@ services:
   dovecot:
     build: ./dovecot
     container_name: ${CONTAINER_NAME}-dovecot
+    user: "${GOMAIL_USER}:${GOMAIL_GROUP}"
     ports:
       - "143:143"
       - "993:993"
@@ -30,6 +32,7 @@ services:
       - MAILDOMAIN=${MAILDOMAIN}
       - MAIL_HOST=${MAIL_HOST}      
     volumes:
+      - /tmp:/tmp
       - ./data/gomail.db:/etc/dovecot/gomail.db:ro
       - ./data/var/mail:/var/mail
       - ./data/etc/letsencrypt:/etc/letsencrypt:ro
@@ -40,10 +43,13 @@ services:
 
   # imapSync
   imapsync:
+    profiles: 
+      - imapsync
     image: gilleslamiral/imapsync:latest
     container_name: ${CONTAINER_NAME}-imapsync
-    user: "100:100"
+    user: "${GOMAIL_USER}:${GOMAIL_GROUP}"
     volumes:
+      - /tmp:/tmp
       - ./data/etc/imapsync/imapsync-mboxes.csv:/config/imapsync-mboxes.csv:ro
       - ./imapsync/sync_mails.sh:/usr/local/bin/sync_mails.sh:ro
       - ./data/var/log/imapsync:/var/log/imapsync
@@ -51,13 +57,20 @@ services:
       - DELAY_BETWEEN_SYNCS=${DELAY_BETWEEN_SYNCS}
     entrypoint: ["/bin/bash", "/usr/local/bin/sync_mails.sh"]
 
-  # Webmail 
+  # Roundcube webmail 
   wm:
-    image: nginx:alpine
+    image: roundcube/roundcubemail:latest
     container_name: ${CONTAINER_NAME}-webmail
+    user: "${GOMAIL_USER}:${GOMAIL_GROUP}"
     restart: always
+    environment:
+      - ROUNDCUBEMAIL_DEFAULT_HOST=dovecot
+      - ROUNDCUBEMAIL_DEFAULT_PORT=143
+      - ROUNDCUBEMAIL_SMTP_SERVER=disabled
+      - ROUNDCUBEMAIL_SKIN=elastic
     volumes:
-    - ./webroot-wm:/usr/share/nginx/html:ro
+      - /tmp:/tmp
+      - ./data/var/roundcube:/var/roundcube/db
 
   # Webadmin 
   ma:
@@ -65,7 +78,8 @@ services:
     container_name: ${CONTAINER_NAME}-webadmin
     restart: always
     volumes:
-    - ./webroot-ma:/usr/share/nginx/html:ro
+      - /tmp:/tmp
+      - ./webroot-ma:/usr/share/nginx/html:ro
 
-volumes:
-  dovecot_sockets:
+# volumes:
+#   dovecot_sockets:

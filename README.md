@@ -11,8 +11,12 @@ beletenni az utolsó protokollt és a bejelentkezések listáját
 doveadm pw -s SHA256-CRYPT -p titok
 
 * ImapSync Levél letöltést végző szerver
+    - profil: imapsync
+
+
 * goMail adminisztrációs felület
 * Exim4 SMTP szerver
+* wg a PM Mail Gateway kapcsolathoz
 ÷ Logrotate
 * Fail2Ban behatolás-megelőzés
 * Kvóta, túlméretes postafiókokra figyelmeztető levél.
@@ -47,3 +51,6 @@ A szükséges DNS bejegyzéseket, tanúsítványokat, dmarc, spf, dkim rekordoka
     Adatbázis létrehozása:
     [?] Adatbázis: data/gomail.db ✅ (létrehozva.)
 
+## IMAPSync
+
+212.92.23.213:feri@koczka.hu:<JELSZO1>:dovecot:feri@koczka.hu:<JELSZO2>

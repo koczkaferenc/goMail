@@ -2,6 +2,7 @@
 [ -d data/run ] && rm -r data/run
 docker build -t sysinit -f sysinit/Dockerfile . >/dev/null 2>/dev/null
 docker run -it --rm --name sysinit \
+    --user "${GOMAIL_USER}:${GOMAIL_GROUP}" \
     -v ./data:/data \
     -v ./data/etc/letsencrypt:/etc/letsencrypt \
     -v ./data/var/lib/letsencrypt:/var/lib/letsencrypt \
