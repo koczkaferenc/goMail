@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Változók behelyettesítése a sablonból
-envsubst '${MAILDOMAIN} ${MAIL_HOST}' < /tmp/dovecot.conf.template > /etc/dovecot/dovecot.conf
+envsubst '${MAILDOMAIN} ${MAIL_HOST}' < /dovecot.conf.template > /etc/dovecot/dovecot.conf
 
 # Maildir gyökér létrehozása
 chown -R 90:90 /var/mail

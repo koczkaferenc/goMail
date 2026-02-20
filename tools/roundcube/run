@@ -1,0 +1,39 @@
+#!/bin/bash
+EMAIL="drkatonaeva@eastlink.hu"
+
+# 1. Konténer indítása
+docker rm -f temp-db 2>/dev/null
+docker run --name temp-db -e MYSQL_ALLOW_EMPTY_PASSWORD=yes -d mysql:8.0
+
+echo "Várakozás a MySQL-re..."
+until docker exec temp-db mysqladmin ping --silent; do echo -n "." ; sleep 2; done
+echo ""
+echo "MySQL kész!"
+
+# 2. Dump betöltése
+docker exec -i temp-db mysql -u root -e "CREATE DATABASE IF NOT EXISTS rc CHARACTER SET utf8mb4;"
+docker exec -i temp-db mysql -u root rc < roundcube_data.sql
+
+# 3. Exportálás - JAVÍTOTT SZINTAXIS (SQLite-hoz)
+# A 'DATETIME' már a VALUES zárójelén belül van.
+mkdir -p ./sqldata
+docker exec -i temp-db mysql -u root rc -N -s --default-character-set=utf8mb4 -e "
+SELECT CONCAT(
+    'INSERT INTO contacts (name, email, firstname, surname, vcard, user_id, changed) VALUES (', 
+    QUOTE(IFNULL(name, '')), ',', 
+    QUOTE(IFNULL(email, '')), ',', 
+    QUOTE(IFNULL(firstname, '')), ',', 
+    QUOTE(IFNULL(surname, '')), ',', 
+    QUOTE(REPLACE(REPLACE(IFNULL(vcard, ''), '\r', ''), '^M', '')), ',', 
+    '(SELECT user_id FROM users WHERE username = \'$EMAIL\'),',
+    'DATETIME(\'now\'));'
+)
+FROM contacts 
+WHERE user_id = (SELECT user_id FROM users WHERE username = '$EMAIL') 
+  AND del = 0;" > ./sqldata/import_clean.sql
+
+# 4. Tisztítás (kocsivissza jelek kigyomlálása a szövegből)
+sed -i 's/\^M//g' ./sqldata/import_clean.sql
+sed -i 's/\\n/\n/g' ./sqldata/import_clean.sql
+
+echo "Kész! Sorok száma a kimenetben: $(wc -l < ./sqldata/import_clean.sql)"

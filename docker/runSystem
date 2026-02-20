@@ -1,11 +1,16 @@
 #!/bin/bash
 . .env
 
-[ ! -d ${DATA_DIR}/var/log ] && mkdir -p ${DATA_DIR}/var/log
-[ ! -d ${DATA_DIR}/var/log/imapsync ] && mkdir -p ${DATA_DIR}/var/log/imapsync
-chown ${GOMAIL_USER}:${GOMAIL_GROUP} -R ${DATA_DIR}
-chmod 777 -R ${DATA_DIR}
-
 docker compose down
+rm -r data/tmp
+if [ "$1" == "-r" ] ; then
+  docker compose build --no-cache
+fi
+
 [ -d data/run ] && rm -r data/run
-docker compose up
+
+PARMS=""
+[ "$RUN_IMAPSYNC" -eq 1 ] && PARMS="$PARMS --profile imapsync"
+[ "$RUN_WEBMAIL" -eq 1 ] && PARMS="$PARMS --profile webmail"
+
+docker compose $PARMS up

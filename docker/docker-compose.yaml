@@ -1,5 +1,5 @@
-#version: '3.3'
 services:
+
   autoconfigurator:
     image: nginx:alpine
     container_name: ${CONTAINER_NAME}-autoconfig
@@ -7,7 +7,7 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - /tmp:/tmp
+      - ./data/tmp/${CONTAINER_NAME}-autoconfig:/tmp
       - ./autoconfigurator/nginx.conf.template:/etc/nginx/templates/default.conf.template
       - ./data/etc/letsencrypt:/etc/letsencrypt:ro
     environment:
@@ -22,7 +22,6 @@ services:
   dovecot:
     build: ./dovecot
     container_name: ${CONTAINER_NAME}-dovecot
-    user: "${GOMAIL_USER}:${GOMAIL_GROUP}"
     ports:
       - "143:143"
       - "993:993"
@@ -32,7 +31,7 @@ services:
       - MAILDOMAIN=${MAILDOMAIN}
       - MAIL_HOST=${MAIL_HOST}      
     volumes:
-      - /tmp:/tmp
+      - ./data/tmp/${CONTAINER_NAME}-dovecot:/tmp
       - ./data/gomail.db:/etc/dovecot/gomail.db:ro
       - ./data/var/mail:/var/mail
       - ./data/etc/letsencrypt:/etc/letsencrypt:ro
@@ -41,27 +40,26 @@ services:
       - ./data/run/dovecot:/var/run/dovecot
     restart: always
 
-  # imapSync
   imapsync:
     profiles: 
       - imapsync
     image: gilleslamiral/imapsync:latest
     container_name: ${CONTAINER_NAME}-imapsync
-    user: "${GOMAIL_USER}:${GOMAIL_GROUP}"
     volumes:
-      - /tmp:/tmp
+      - ./data/tmp/${CONTAINER_NAME}-imapsync:/tmp
       - ./data/etc/imapsync/imapsync-mboxes.csv:/config/imapsync-mboxes.csv:ro
       - ./imapsync/sync_mails.sh:/usr/local/bin/sync_mails.sh:ro
       - ./data/var/log/imapsync:/var/log/imapsync
     environment:
       - DELAY_BETWEEN_SYNCS=${DELAY_BETWEEN_SYNCS}
     entrypoint: ["/bin/bash", "/usr/local/bin/sync_mails.sh"]
-
+  
   # Roundcube webmail 
   wm:
+    profiles: 
+      - webmail  
     image: roundcube/roundcubemail:latest
     container_name: ${CONTAINER_NAME}-webmail
-    user: "${GOMAIL_USER}:${GOMAIL_GROUP}"
     restart: always
     environment:
       - ROUNDCUBEMAIL_DEFAULT_HOST=dovecot
@@ -69,17 +67,17 @@ services:
       - ROUNDCUBEMAIL_SMTP_SERVER=disabled
       - ROUNDCUBEMAIL_SKIN=elastic
     volumes:
-      - /tmp:/tmp
+      - ./data/tmp/${CONTAINER_NAME}-wm:/tmp
       - ./data/var/roundcube:/var/roundcube/db
-
+  
   # Webadmin 
   ma:
     image: nginx:alpine
     container_name: ${CONTAINER_NAME}-webadmin
     restart: always
     volumes:
-      - /tmp:/tmp
+      - ./data/tmp/${CONTAINER_NAME}-ma:/tmp
       - ./webroot-ma:/usr/share/nginx/html:ro
-
+     
 # volumes:
 #   dovecot_sockets:

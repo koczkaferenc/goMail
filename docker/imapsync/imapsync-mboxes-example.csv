@@ -1,0 +1,13 @@
+#
+# A szinkrnozálandó mailboxok adatai
+# 1. Forrás IMAP szerver neve/címe
+# 2. E-mail cím/Login
+# 3. Forrás jelszó
+# 4. Cél gép, konténerben dovecot
+# 5. Cél gép login/e-mail cím
+# 6. Cél gép jelszó
+# 7. Ennyi napnál régebbi leveleket törli a forrásból - 0 nem töröl
+#
+
+212.92.23.213:feri@koczka.hu:PW1:dovecot:feri@koczka.hu:PW2:20
+

@@ -1,8 +1,17 @@
 #!/bin/bash
-[ -d data/run ] && rm -r data/run
+. .env
+
+# Takarítás
+for I in data/tmp data/run data/var/log data/var/roudcube ; do
+  [ -d $I ] && rm -r $I
+done
+read T
+[ ! -d ${DATA_DIR}/var/log ] && mkdir -p ${DATA_DIR}/var/log
+[ ! -d ${DATA_DIR}/var/log/imapsync ] && mkdir -p ${DATA_DIR}/var/log/imapsync
+chmod 777 -R ${DATA_DIR}
+
 docker build -t sysinit -f sysinit/Dockerfile . >/dev/null 2>/dev/null
 docker run -it --rm --name sysinit \
-    --user "${GOMAIL_USER}:${GOMAIL_GROUP}" \
     -v ./data:/data \
     -v ./data/etc/letsencrypt:/etc/letsencrypt \
     -v ./data/var/lib/letsencrypt:/var/lib/letsencrypt \

@@ -26,7 +26,7 @@ RUN mkdir -p /var/log/dovecot /var/run/dovecot /var/mail && \
     chown vmail:vmail /var/mail
 
 # Csak a sablonokat másoljuk be (így nem kerül be véletlenül a conf.d)
-COPY conf/dovecot.conf.template /tmp
+COPY conf/dovecot.conf.template /dovecot.conf.template
 COPY conf/dovecot-sql.conf.ext /etc/dovecot
 COPY entrypoint.sh /
 RUN chmod +x /entrypoint.sh
