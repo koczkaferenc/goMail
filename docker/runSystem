@@ -1,16 +1,19 @@
 #!/bin/bash
 . .env
 
-docker compose down
+docker compose down --remove-orphans
 rm -r data/tmp
 if [ "$1" == "-r" ] ; then
+  docker network prune -f
+  docker system prune --volumes -f
   docker compose build --no-cache
 fi
 
 [ -d data/run ] && rm -r data/run
+docker network prune -f
+docker system prune --volumes -f
 
 PARMS=""
 [ "$RUN_IMAPSYNC" -eq 1 ] && PARMS="$PARMS --profile imapsync"
-[ "$RUN_WEBMAIL" -eq 1 ] && PARMS="$PARMS --profile webmail"
 
 docker compose $PARMS up

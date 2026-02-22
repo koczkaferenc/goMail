@@ -1,0 +1,5 @@
+# Ezek az admin userek. x...5
+# Bejelentkezés: pistike@domain.hu*adminuser
+# Létrehozás: doveadm pw -s SHA512-CRYPT -u adminuser
+#
+adminuser:{SHA512-CRYPT}$6$4mYXq4AOqLL4AqGZ$6AWQtLLgidU/nJ9yYUZ6GSWA/QAskm8Tu/ZNMk/1j30a0PGBo0JJ0MpqWjiGbPSfyh4U2SXNdRyTGQvDOmx24.

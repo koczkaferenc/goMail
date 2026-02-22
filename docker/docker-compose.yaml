@@ -1,5 +1,6 @@
 services:
 
+  # Autoconfig, proxy
   autoconfigurator:
     image: nginx:alpine
     container_name: ${CONTAINER_NAME}-autoconfig
@@ -18,6 +19,11 @@ services:
       - AUTOCONFIG_HOST=${AUTOCONFIG_HOST}
       - AUTODISCOVER_HOST=${AUTODISCOVER_HOST}
     restart: always
+    depends_on:
+      - wm
+      - ma
+    networks:
+      - gomail-network         
 
   dovecot:
     build: ./dovecot
@@ -29,7 +35,8 @@ services:
       - "995:995"
     environment:
       - MAILDOMAIN=${MAILDOMAIN}
-      - MAIL_HOST=${MAIL_HOST}      
+      - MAIL_HOST=${MAIL_HOST}     
+      - DOVECOT_MASTERPASSWORD=${DOVECOT_MASTERPASSWORD} 
     volumes:
       - ./data/tmp/${CONTAINER_NAME}-dovecot:/tmp
       - ./data/gomail.db:/etc/dovecot/gomail.db:ro
@@ -39,6 +46,8 @@ services:
       # LMTP socket megosztása
       - ./data/run/dovecot:/var/run/dovecot
     restart: always
+    networks:
+      - gomail-network       
 
   imapsync:
     profiles: 
@@ -53,11 +62,11 @@ services:
     environment:
       - DELAY_BETWEEN_SYNCS=${DELAY_BETWEEN_SYNCS}
     entrypoint: ["/bin/bash", "/usr/local/bin/sync_mails.sh"]
-  
+    networks:
+      - gomail-network    
+
   # Roundcube webmail 
   wm:
-    profiles: 
-      - webmail  
     image: roundcube/roundcubemail:latest
     container_name: ${CONTAINER_NAME}-webmail
     restart: always
@@ -69,6 +78,8 @@ services:
     volumes:
       - ./data/tmp/${CONTAINER_NAME}-wm:/tmp
       - ./data/var/roundcube:/var/roundcube/db
+    networks:
+      - gomail-network         
   
   # Webadmin 
   ma:
@@ -78,6 +89,12 @@ services:
     volumes:
       - ./data/tmp/${CONTAINER_NAME}-ma:/tmp
       - ./webroot-ma:/usr/share/nginx/html:ro
+    networks:
+      - gomail-network   
+
+networks:
+  gomail-network:
+    driver: bridge
      
 # volumes:
 #   dovecot_sockets:

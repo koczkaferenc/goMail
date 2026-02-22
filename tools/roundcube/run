@@ -1,39 +1,73 @@
 #!/bin/bash
-EMAIL="drkatonaeva@eastlink.hu"
 
-# 1. Konténer indítása
+# --- KONFIGURÁCIÓ ---
+EMAILS="fanczal.mariann@burda.hu kovacs.eniko@reanimatio.com molnar@emsico.hu zoltan.nagy@genomic-solution.hu"
+RCDB="../sqlite/sqlite.db"
+HOST="mail.halation.hu"
+
+
+SQLDATA_DIR="./sqldata"
+
+[ ! -d "$SQLDATA_DIR" ] && mkdir -p "$SQLDATA_DIR"
+
+# 1. MariaDB újraindítás (hogy biztosan fusson az export alatt)
+echo ">>> MariaDB ellenőrzése..."
 docker rm -f temp-db 2>/dev/null
-docker run --name temp-db -e MYSQL_ALLOW_EMPTY_PASSWORD=yes -d mysql:8.0
+docker run --name temp-db -e MYSQL_ALLOW_EMPTY_PASSWORD=yes -v "$(pwd):/work" -d mariadb:10.6
 
-echo "Várakozás a MySQL-re..."
-until docker exec temp-db mysqladmin ping --silent; do echo -n "." ; sleep 2; done
-echo ""
-echo "MySQL kész!"
+echo -n "Várakozás az adatbázisra"
+until docker exec temp-db mysqladmin ping --silent; do echo -n "."; sleep 2; done
+echo " Online!"
 
-# 2. Dump betöltése
+# Alapadatok visszatöltése a MariaDB-be (ha szükséges)
 docker exec -i temp-db mysql -u root -e "CREATE DATABASE IF NOT EXISTS rc CHARACTER SET utf8mb4;"
 docker exec -i temp-db mysql -u root rc < roundcube_data.sql
 
-# 3. Exportálás - JAVÍTOTT SZINTAXIS (SQLite-hoz)
-# A 'DATETIME' már a VALUES zárójelén belül van.
-mkdir -p ./sqldata
-docker exec -i temp-db mysql -u root rc -N -s --default-character-set=utf8mb4 -e "
-SELECT CONCAT(
-    'INSERT INTO contacts (name, email, firstname, surname, vcard, user_id, changed) VALUES (', 
-    QUOTE(IFNULL(name, '')), ',', 
-    QUOTE(IFNULL(email, '')), ',', 
-    QUOTE(IFNULL(firstname, '')), ',', 
-    QUOTE(IFNULL(surname, '')), ',', 
-    QUOTE(REPLACE(REPLACE(IFNULL(vcard, ''), '\r', ''), '^M', '')), ',', 
-    '(SELECT user_id FROM users WHERE username = \'$EMAIL\'),',
-    'DATETIME(\'now\'));'
-)
-FROM contacts 
-WHERE user_id = (SELECT user_id FROM users WHERE username = '$EMAIL') 
-  AND del = 0;" > ./sqldata/import_clean.sql
+# 2. Exportálás és Importálás ciklusban
+for EMAIL in $EMAILS ; do
+  echo "----------------------------------------------------------"
+  echo "FELDOLGOZÁS: $EMAIL"
 
-# 4. Tisztítás (kocsivissza jelek kigyomlálása a szövegből)
-sed -i 's/\^M//g' ./sqldata/import_clean.sql
-sed -i 's/\\n/\n/g' ./sqldata/import_clean.sql
+  # User ID lekérdezése
+  USER_ID=$(docker run --rm -v "$(pwd)/$RCDB":/db_folder/sqlite.db local-sqlite sqlite3 /db_folder/sqlite.db "SELECT user_id FROM users WHERE username = '$EMAIL' LIMIT 1;")
 
-echo "Kész! Sorok száma a kimenetben: $(wc -l < ./sqldata/import_clean.sql)"
+  if [ -z "$USER_ID" ]; then
+    echo ">>> User létrehozása..."
+    docker run --rm -v "$(pwd)/$RCDB":/db_folder/sqlite.db local-sqlite sqlite3 /db_folder/sqlite.db "INSERT INTO users (username, mail_host, created, language) VALUES ('$EMAIL', '$HOST', datetime('now'), 'hu_HU');"
+    USER_ID=$(docker run --rm -v "$(pwd)/$RCDB":/db_folder/sqlite.db local-sqlite sqlite3 /db_folder/sqlite.db "SELECT user_id FROM users WHERE username = '$EMAIL' LIMIT 1;")
+  fi
+  echo ">>> Használt User ID: $USER_ID"
+
+  # EXPORTÁLÁS (MariaDB -> SQL fájl)
+  docker exec -i temp-db mysql -u root rc -N -s --default-character-set=utf8mb4 -e "
+  SELECT CONCAT(
+      'INSERT INTO contacts (name, email, firstname, surname, vcard, user_id, changed) VALUES (',
+      '\'', REPLACE(IFNULL(name, ''), '\'', '\'\''), '\',',
+      '\'', REPLACE(IFNULL(email, ''), '\'', '\'\''), '\',',
+      '\'', REPLACE(IFNULL(firstname, ''), '\'', '\'\''), '\',',
+      '\'', REPLACE(IFNULL(surname, ''), '\'', '\'\''), '\',',
+      '\'', REPLACE(REPLACE(REPLACE(IFNULL(vcard, ''), '\r', ''), '\n', '\\n'), '\'', '\'\''), '\',',
+      $USER_ID, ',',
+      'DATETIME(\'now\'));'
+  )
+  FROM contacts
+  WHERE user_id = (SELECT user_id FROM users WHERE username = '$EMAIL') AND del = 0;" > "$SQLDATA_DIR/$EMAIL.sql"
+
+  # IMPORTÁLÁS (SQL fájl -> SQLite)
+  echo ">>> SQLite frissítése..."
+  docker run --rm \
+    -v "$(pwd)/$SQLDATA_DIR":/sqldata \
+    -v "$(pwd)/$RCDB":/db_folder/sqlite.db \
+    -w /db_folder \
+    local-sqlite sh -c "
+      sqlite3 sqlite.db \"DELETE FROM contacts WHERE user_id = $USER_ID;\" && \
+      sqlite3 sqlite.db \".read /sqldata/$EMAIL.sql\"
+    "
+
+  FINAL_COUNT=$(docker run --rm -v "$(pwd)/$RCDB":/db_folder/sqlite.db local-sqlite sqlite3 /db_folder/sqlite.db "SELECT COUNT(*) FROM contacts WHERE user_id = $USER_ID;")
+  echo ">>> KÉSZ: $EMAIL (DB állapot: $FINAL_COUNT kontakt)"
+done
+
+# Takarítás
+docker rm -f temp-db
+echo ">>> MŰVELET BEFEJEZŐDÖTT."
